@@ -11,6 +11,8 @@ It is meant for development and staging, never production.
   Tailwind, no daisyUI, no Stimulus, no importmap, no build step.
 - **Zero layout changes.** The widget is injected into HTML responses
   automatically (opt out and place it yourself if you prefer).
+- **Trigger it your way.** Use the built-in floating pill, or hide it and switch
+  suggest mode on from your own link (a nav item, a menu, anywhere).
 - **Pluggable gating and attribution.** You decide which environments and which
   users see the tool, and how a suggestion is attributed.
 
@@ -33,11 +35,11 @@ It is meant for development and staging, never production.
 
 ## Installation
 
-Add the gem:
+Add the gem (from source until it is published on RubyGems):
 
 ```ruby
 # Gemfile
-gem "i18n_feedback"
+gem "i18n_feedback", github: "yshmarov/i18n-feedback"
 ```
 
 ```bash

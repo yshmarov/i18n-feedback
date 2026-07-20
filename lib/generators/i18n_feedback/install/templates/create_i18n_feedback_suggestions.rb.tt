@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+class CreateI18nFeedbackSuggestions < ActiveRecord::Migration<%= migration_version %>
+  def change
+    create_table :i18n_feedback_suggestions do |t|
+      t.string :translation_key, null: false
+      t.string :locale, null: false
+      t.text :old_value
+      t.text :proposed_value, null: false
+      t.text :comment
+      t.string :page_url
+      t.string :author_id
+      t.string :author_label
+
+      t.timestamps
+    end
+
+    add_index :i18n_feedback_suggestions, %i[translation_key locale]
+  end
+end

@@ -30,7 +30,7 @@ module I18nFeedback
       headers = persist_choice(headers, override) if available && !override.nil?
 
       if available && I18nFeedback.config.auto_inject && html?(headers) && !request.xhr?
-        status, headers, body = inject(status, headers, body, marking)
+        status, headers, body = inject(status, headers, body, marking, csp_nonce(env))
       end
 
       [status, headers, body]
@@ -42,6 +42,17 @@ module I18nFeedback
 
     def cookie_on?(request)
       !request.cookies[COOKIE].to_s.empty?
+    end
+
+    # The request's CSP nonce, so the injected scripts run under a nonce-based
+    # Content-Security-Policy. Reads the value Rails memoizes on the env, which is
+    # the same nonce the CSP header uses. nil when the app sets no nonce.
+    def csp_nonce(env)
+      return nil unless defined?(ActionDispatch::Request)
+
+      ActionDispatch::Request.new(env).content_security_policy_nonce
+    rescue StandardError
+      nil
     end
 
     def toggle_override(request)
@@ -80,7 +91,7 @@ module I18nFeedback
       headers['Content-Type'] || headers['content-type']
     end
 
-    def inject(status, headers, body, marking)
+    def inject(status, headers, body, marking, nonce)
       html = +''
       body.each { |part| html << part.to_s }
       body.close if body.respond_to?(:close)
@@ -88,7 +99,8 @@ module I18nFeedback
       snippet = Widget.snippet(
         endpoint: I18nFeedback.config.suggestions_endpoint,
         locale: I18n.locale,
-        active: marking
+        active: marking,
+        nonce: nonce
       )
       html = html.include?('</body>') ? html.sub('</body>', "#{snippet}</body>") : html + snippet
 

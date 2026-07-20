@@ -17,8 +17,10 @@ module I18nFeedback
       end
 
       # The two <script> tags to place before </body>: one carrying the runtime
-      # config, one carrying the widget itself.
-      def snippet(endpoint:, locale:, active:)
+      # config, one carrying the widget itself. `nonce:` stamps both tags so the
+      # widget runs under a nonce-based Content-Security-Policy (e.g. one using
+      # 'strict-dynamic'); pass nil when the app has no CSP nonce.
+      def snippet(endpoint:, locale:, active:, nonce: nil)
         config = {
           endpoint: endpoint,
           locale: locale.to_s,
@@ -26,9 +28,10 @@ module I18nFeedback
           showPill: I18nFeedback.config.show_pill ? true : false,
           pillLabel: I18nFeedback.config.pill_label
         }
+        nonce_attr = nonce ? %( nonce="#{nonce}") : ''
 
-        %(<script data-i18n-feedback>window.__i18nFeedback=#{config.to_json};</script>) +
-          %(<script data-i18n-feedback-widget>#{javascript}</script>)
+        %(<script data-i18n-feedback#{nonce_attr}>window.__i18nFeedback=#{config.to_json};</script>) +
+          %(<script data-i18n-feedback-widget#{nonce_attr}>#{javascript}</script>)
       end
     end
   end

@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.2.0]
+
+- Stamp the injected widget scripts with the request's Content-Security-Policy
+  nonce when one is present, so the tool works under a nonce-based CSP (including
+  `strict-dynamic`). No-op for apps without a CSP nonce.
+
 ## [0.1.0]
 
 - Initial release.

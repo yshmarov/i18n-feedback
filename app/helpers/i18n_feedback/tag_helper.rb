@@ -11,7 +11,8 @@ module I18nFeedback
       Widget.snippet(
         endpoint: I18nFeedback.config.suggestions_endpoint,
         locale: I18n.locale,
-        active: I18nFeedback::Marking.enabled?
+        active: I18nFeedback::Marking.enabled?,
+        nonce: (content_security_policy_nonce if respond_to?(:content_security_policy_nonce))
       ).html_safe
     end
   end

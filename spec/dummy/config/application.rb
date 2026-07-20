@@ -24,5 +24,12 @@ module Dummy
     config.secret_key_base = "i18n-feedback-dummy-secret"
     config.i18n.available_locales = %i[en fr]
     config.i18n.default_locale = :en
+
+    # A nonce-based CSP, so specs can assert the injected widget is noncED.
+    config.content_security_policy do |policy|
+      policy.script_src :self
+    end
+    config.content_security_policy_nonce_generator = ->(_request) { 'testnonce' }
+    config.content_security_policy_nonce_directives = %w[script-src]
   end
 end

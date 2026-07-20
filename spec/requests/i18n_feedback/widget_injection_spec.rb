@@ -52,4 +52,11 @@ RSpec.describe 'widget injection and key marking', type: :request do
 
     expect(response.body).to include('"showPill":false')
   end
+
+  it 'stamps the injected scripts with the CSP nonce so they run under a nonce-based policy' do
+    get '/sample'
+
+    expect(response.body).to include('<script data-i18n-feedback nonce="testnonce">')
+    expect(response.body).to include('<script data-i18n-feedback-widget nonce="testnonce">')
+  end
 end

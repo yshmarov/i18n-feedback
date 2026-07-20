@@ -86,10 +86,34 @@ I18nFeedback.configure do |config|
   # Inject the widget automatically. Set false to place it yourself.
   config.auto_inject = true
 
+  # Show the floating "Suggest edits" pill. Set false to drive suggest mode from
+  # your own link instead (see below).
+  config.show_pill = true
+
+  # Query parameter that toggles suggest mode.
+  config.toggle_param = "i18n_feedback"
+
   # Keep in sync with the `mount` in config/routes.rb.
   config.mount_path = "/i18n_feedback"
 end
 ```
+
+### Toggling suggest mode from your own link
+
+Prefer a menu item over the floating pill? Hide the pill and link to the toggle
+parameter from anywhere in your UI:
+
+```ruby
+config.show_pill = false
+```
+
+```erb
+<%= link_to "Proofread translations", "?i18n_feedback=true" %>
+```
+
+`?i18n_feedback=true` turns suggest mode on and `?i18n_feedback=false` turns it
+off. The choice is remembered in a cookie, so the rest of the app stays in
+suggest mode without the parameter; `Esc` also exits.
 
 ### Gating examples
 

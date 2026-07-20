@@ -43,7 +43,7 @@
 
   ready(function () {
     injectStyles();
-    buildPill();
+    if (config.showPill !== false) buildPill();
     document.addEventListener("keydown", handleKeydown);
 
     if (config.active) {
@@ -339,7 +339,10 @@
     var style = document.createElement("style");
     style.id = "i18nf-styles";
     style.textContent = [
-      ".i18nf-active, .i18nf-active * { cursor: copy !important; }",
+      // Only the strings that actually resolve to a key are editable, so only
+      // those get the copy cursor and a hover outline.
+      ".i18nf-active [data-i18n-key] { cursor: copy; }",
+      ".i18nf-active [data-i18n-key]:hover { outline: 1px dashed #2563eb; outline-offset: 2px; }",
       ".i18nf-pill { position: fixed; bottom: 16px; left: 16px; z-index: " + (Z + 1) + ";",
       "  font: 13px/1.2 system-ui, sans-serif; padding: 9px 14px; border-radius: 999px;",
       "  border: 1px solid rgba(0,0,0,.15); background: #fff; color: #111; cursor: pointer;",

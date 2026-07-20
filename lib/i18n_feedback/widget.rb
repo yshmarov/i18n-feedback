@@ -19,7 +19,13 @@ module I18nFeedback
       # The two <script> tags to place before </body>: one carrying the runtime
       # config, one carrying the widget itself.
       def snippet(endpoint:, locale:, active:)
-        config = { endpoint: endpoint, locale: locale.to_s, active: active ? true : false }
+        config = {
+          endpoint: endpoint,
+          locale: locale.to_s,
+          active: active ? true : false,
+          showPill: I18nFeedback.config.show_pill ? true : false,
+          pillLabel: I18nFeedback.config.pill_label
+        }
 
         %(<script data-i18n-feedback>window.__i18nFeedback=#{config.to_json};</script>) +
           %(<script data-i18n-feedback-widget>#{javascript}</script>)

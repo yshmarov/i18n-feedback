@@ -25,6 +25,14 @@ I18nFeedback.configure do |config|
   #
   # config.auto_inject = true
 
+  # Show the floating "Suggest edits" pill. Set false to hide it and toggle
+  # suggest mode from your own link instead, e.g.
+  # `<%= link_to "Proofread", "?i18n_feedback=true" %>`. "?i18n_feedback=false"
+  # exits; the choice is remembered in a cookie.
+  #
+  # config.show_pill = true
+  # config.toggle_param = "i18n_feedback"
+
   # Keep this in sync with the `mount` line in config/routes.rb.
   #
   # config.mount_path = "/i18n_feedback"

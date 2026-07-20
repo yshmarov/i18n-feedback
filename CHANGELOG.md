@@ -8,7 +8,11 @@
 - In-context i18n key markers, gated to configured environments and toggled per
   request by the widget.
 - Self-contained browser widget (no CSS or JS framework required) with a suggest
-  pill and a per-string suggestion popover.
+  pill and a per-string suggestion popover. The copy cursor and hover outline
+  appear only on the strings that resolve to a key.
+- Optional floating pill (`config.show_pill`) and a URL toggle
+  (`?i18n_feedback=true` / `false`, remembered in a cookie) so suggest mode can
+  be triggered from a host-provided link instead.
 - `I18nFeedback::Suggestion` model and mountable engine endpoints for listing and
   creating suggestions.
 - `i18n_feedback:install` generator (initializer, migration, engine mount).

@@ -17,10 +17,17 @@ module I18nFeedback
     def call(env)
       request = Rack::Request.new(env)
       available = I18nFeedback.available?(request)
-      marking = available && !request.cookies[COOKIE].to_s.empty?
+
+      # A "?i18n_feedback=true|false" in the URL is a command: it overrides the
+      # cookie for this request and is remembered so the rest of the app stays in
+      # (or out of) suggest mode without the parameter.
+      override = available ? toggle_override(request) : nil
+      marking = available && (override.nil? ? cookie_on?(request) : override)
       Marking.enabled = marking
 
       status, headers, body = @app.call(env)
+
+      headers = persist_choice(headers, override) if available && !override.nil?
 
       if available && I18nFeedback.config.auto_inject && html?(headers) && !request.xhr?
         status, headers, body = inject(status, headers, body, marking)
@@ -32,6 +39,38 @@ module I18nFeedback
     end
 
     private
+
+    def cookie_on?(request)
+      !request.cookies[COOKIE].to_s.empty?
+    end
+
+    def toggle_override(request)
+      param = I18nFeedback.config.toggle_param
+      return nil unless request.params.key?(param)
+
+      %w[1 true on yes].include?(request.params[param].to_s.strip.downcase)
+    end
+
+    def persist_choice(headers, desired)
+      headers = headers.dup
+      cookie = if desired
+                 "#{COOKIE}=1; path=/; SameSite=Lax"
+               else
+                 "#{COOKIE}=; path=/; max-age=0; SameSite=Lax"
+               end
+      key = header_key(headers, 'set-cookie') || 'set-cookie'
+      existing = headers[key]
+      headers[key] = case existing
+                     when nil then cookie
+                     when Array then existing + [cookie]
+                     else "#{existing}\n#{cookie}"
+                     end
+      headers
+    end
+
+    def header_key(headers, name)
+      headers.key?(name) ? name : headers.keys.find { |k| k.to_s.casecmp?(name) }
+    end
 
     def html?(headers)
       content_type(headers).to_s.include?('text/html')

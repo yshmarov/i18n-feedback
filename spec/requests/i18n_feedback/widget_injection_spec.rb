@@ -30,4 +30,26 @@ RSpec.describe 'widget injection and key marking', type: :request do
 
     expect(response.body).not_to include('window.__i18nFeedback')
   end
+
+  it 'turns suggest mode on via the toggle parameter and remembers it in a cookie' do
+    get '/sample', params: { i18n_feedback: 'true' }
+
+    expect(response.body).to include("#{I18nFeedback::Marking::LEFT}sample.greeting#{I18nFeedback::Marking::RIGHT}")
+    expect(response.cookies['i18n_feedback']).to eq('1')
+  end
+
+  it 'turns suggest mode off via the toggle parameter' do
+    get '/sample', params: { i18n_feedback: 'false' }, headers: { 'HTTP_COOKIE' => 'i18n_feedback=1' }
+
+    expect(response.body).not_to include("#{I18nFeedback::Marking::LEFT}sample.greeting")
+    expect(response.cookies['i18n_feedback']).to be_blank
+  end
+
+  it 'omits the pill from the injected config when show_pill is false' do
+    I18nFeedback.config.show_pill = false
+
+    get '/sample'
+
+    expect(response.body).to include('"showPill":false')
+  end
 end

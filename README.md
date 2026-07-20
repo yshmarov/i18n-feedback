@@ -35,11 +35,11 @@ It is meant for development and staging, never production.
 
 ## Installation
 
-Add the gem (from source until it is published on RubyGems):
+Add the gem:
 
 ```ruby
 # Gemfile
-gem "i18n_feedback", github: "yshmarov/i18n-feedback"
+gem "i18n_feedback"
 ```
 
 ```bash

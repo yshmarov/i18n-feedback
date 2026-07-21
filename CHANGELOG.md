@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.4.0]
+
+- Add a `config.on_submit` hook, called with each saved suggestion right after
+  it's stored — notify Slack, send an email, open a ticket. Runs inline after
+  save, so keep it fast or hand off to a job.
+
 ## [0.3.1]
 
 - Fix the widget showing raw key markers (e.g. `⟦i18n_feedback.title⟧`) in its own

@@ -18,6 +18,7 @@ module I18nFeedback
       attribute_author(suggestion)
 
       if suggestion.save
+        I18nFeedback.config.on_submit.call(suggestion)
         head :created
       else
         render json: { errors: suggestion.errors.full_messages }, status: :unprocessable_entity

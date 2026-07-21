@@ -36,4 +36,9 @@ I18nFeedback.configure do |config|
   # Keep this in sync with the `mount` line in config/routes.rb.
   #
   # config.mount_path = "/i18n_feedback"
+
+  # Called with each saved suggestion — notify Slack, send an email, open a
+  # ticket. Runs inline after save, so keep it fast or hand off to a job.
+  #
+  # config.on_submit = ->(suggestion) { SuggestionMailer.with(suggestion:).created.deliver_later }
 end

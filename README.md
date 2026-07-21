@@ -234,6 +234,16 @@ end
 Each row stores `translation_key`, `locale`, `old_value`, `proposed_value`,
 `comment`, `page_url`, and optional `author_id` / `author_label`.
 
+### Getting notified
+
+To be pinged when a suggestion comes in, set `on_submit`. It's called with the
+saved `Suggestion` right after it's stored — notify Slack, send an email, open a
+ticket. It runs inline in the request, so keep it fast or hand off to a job:
+
+```ruby
+config.on_submit = ->(suggestion) { SuggestionMailer.with(suggestion:).created.deliver_later }
+```
+
 ## Security
 
 - The tool is gated **on the server** for every marker, endpoint, and injection.

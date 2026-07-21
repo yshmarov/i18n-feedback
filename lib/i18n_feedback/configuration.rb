@@ -48,6 +48,10 @@ module I18nFeedback
     # suggest mode without the parameter.
     attr_accessor :toggle_param
 
+    # Called with each saved suggestion — notify Slack, send an email, open a
+    # ticket. Runs inline after save; keep it fast or hand off to a job.
+    attr_accessor :on_submit
+
     def initialize
       @enabled_environments = %w[development staging]
       @enabled = ->(_request) { true }
@@ -59,6 +63,7 @@ module I18nFeedback
       @show_pill = true
       @pill_label = nil
       @toggle_param = 'i18n_feedback'
+      @on_submit = ->(_suggestion) {}
     end
 
     def environment_enabled?

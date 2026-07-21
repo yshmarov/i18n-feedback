@@ -51,6 +51,27 @@ RSpec.describe 'I18nFeedback::Suggestions', type: :request do
 
       expect(response).to have_http_status(:forbidden)
     end
+
+    it 'runs the on_submit hook with the saved suggestion' do
+      submitted = nil
+      I18nFeedback.config.on_submit = ->(suggestion) { submitted = suggestion }
+
+      post '/i18n_feedback/suggestions', params: valid_params
+
+      expect(submitted).to be_a(I18nFeedback::Suggestion)
+      expect(submitted).to be_persisted
+      expect(submitted.proposed_value).to eq('Hi there')
+    end
+
+    it 'does not run the on_submit hook when the suggestion is invalid' do
+      ran = false
+      I18nFeedback.config.on_submit = ->(_suggestion) { ran = true }
+
+      post '/i18n_feedback/suggestions',
+           params: { suggestion: { translation_key: '', locale: 'en', proposed_value: '' } }
+
+      expect(ran).to be(false)
+    end
   end
 
   describe 'GET /i18n_feedback/suggestions' do

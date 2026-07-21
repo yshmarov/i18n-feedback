@@ -88,4 +88,18 @@ RSpec.describe I18nFeedback::Widget do
       end
     end
   end
+
+  describe '.snippet escaping' do
+    it 'escapes </ so a config value cannot close the script block early' do
+      I18nFeedback.config.pill_label = '</script><script>alert(1)</script>'
+
+      snippet = described_class.snippet(endpoint: '/x', locale: :en, active: false)
+      json = snippet[%r{data-i18n-feedback-config>(.*?)</script>}m, 1]
+
+      # The extracted block stops at the real closing tag, so the payload must
+      # not have introduced one of its own — yet the value round-trips intact.
+      expect(json).not_to include('</script>')
+      expect(config_from(snippet)['pillLabel']).to eq('</script><script>alert(1)</script>')
+    end
+  end
 end

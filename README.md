@@ -14,7 +14,10 @@ It is meant for development and staging, never production.
 
 ![Click any string in your running app and suggest a better wording](i18n-feedback-demo.gif)
 
-<sub>▶ [Watch in higher quality (MP4)](i18n-feedback-demo-640-high.mp4)</sub>
+<video src="https://github.com/yshmarov/i18n-feedback/raw/main/i18n-feedback-demo-640-high.mp4" controls muted playsinline width="640">
+  Your browser can't play this video —
+  <a href="https://github.com/yshmarov/i18n-feedback/raw/main/i18n-feedback-demo-640-high.mp4">download it here</a>.
+</video>
 
 - **Zero UI dependencies.** The widget is plain JavaScript and styles itself. No
   Tailwind, no daisyUI, no Stimulus, no importmap, no build step.

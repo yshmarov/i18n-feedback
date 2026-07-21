@@ -1,11 +1,20 @@
 # i18n_feedback
 
+[![Gem Version](https://img.shields.io/gem/v/i18n_feedback)](https://rubygems.org/gems/i18n_feedback)
+[![Downloads](https://img.shields.io/gem/dt/i18n_feedback)](https://rubygems.org/gems/i18n_feedback)
+[![CI](https://github.com/yshmarov/i18n-feedback/actions/workflows/ci.yml/badge.svg)](https://github.com/yshmarov/i18n-feedback/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](MIT-LICENSE)
+
 In-context translation proofreading for Rails.
 
 `i18n_feedback` renders every translated string alongside its i18n key in the
 environments you choose, lets a reviewer click any string in the running app and
 suggest a better wording, and stores those suggestions for a developer to apply.
 It is meant for development and staging, never production.
+
+<!-- Drop the demo GIF here before launch, e.g.:
+![Demo](docs/demo.gif)
+-->
 
 - **Zero UI dependencies.** The widget is plain JavaScript and styles itself. No
   Tailwind, no daisyUI, no Stimulus, no importmap, no build step.
@@ -27,6 +36,13 @@ It is meant for development and staging, never production.
    suggestions, and a field to propose a new wording.
 4. Suggestions are `POST`ed to the mounted engine and stored in the
    `i18n_feedback_suggestions` table for you to review and apply.
+
+## Turbo
+
+Works with Turbo Drive out of the box. Turbo replaces `<body>` on every visit,
+which would take the pill and the active-mode highlighting with it, so the
+widget registers its document-level listeners once and re-renders on
+`turbo:load`. The pill survives navigation without a full reload.
 
 ## Requirements
 
@@ -102,20 +118,41 @@ end
 
 ### Toggling suggest mode from your own link
 
-Prefer a menu item over the floating pill? Hide the pill and link to the toggle
-parameter from anywhere in your UI:
+Prefer a menu item over the floating pill? You can drive suggest mode from any
+link in your own UI — a nav item, a sidebar entry, a footer — and optionally hide
+the pill (the two can also coexist):
 
 ```ruby
-config.show_pill = false
+config.show_pill = false # optional
 ```
+
+A one-way "turn it on" link is just the toggle parameter:
 
 ```erb
 <%= link_to "Proofread translations", "?i18n_feedback=true" %>
 ```
 
-`?i18n_feedback=true` turns suggest mode on and `?i18n_feedback=false` turns it
-off. The choice is remembered in a cookie, so the rest of the app stays in
-suggest mode without the parameter; `Esc` also exits.
+For a single control that flips both ways, read the current state from the
+`i18n_feedback` cookie and point at the opposite state:
+
+```erb
+<% on = cookies[:i18n_feedback].present? %>
+<%= link_to (on ? "Disable translations editing" : "Enable translations editing"),
+            "?i18n_feedback=#{!on}" %>
+```
+
+Good to know:
+
+- `?i18n_feedback=true` turns suggest mode on, `false` turns it off. The state is
+  stored in the `i18n_feedback` cookie, and the middleware then redirects to the
+  same URL without the parameter — so it never sticks in the address bar and the
+  cookie stays the single source of truth. `Esc` (or the pill) also exits.
+- These links keep working **while suggest mode is active**. The widget freezes
+  ordinary navigation during proofreading (so a stray click can't leave the page
+  mid-edit), but any link carrying the toggle parameter is exempt — so a "Disable"
+  item in your nav always gets you out.
+- **Don't** run the label through `I18n.t`: the tool would then mark its own
+  control as an editable string. Keep the label a plain literal.
 
 ### Gating examples
 
@@ -157,6 +194,12 @@ Each row stores `translation_key`, `locale`, `old_value`, `proposed_value`,
   `config.enabled` returns true.
 - Format and lookup namespaces (`number.*`, `date.*`, `*_html` formats, etc.) are
   never marked, so currency and date formatting are unaffected.
+- The injected widget code carries the request's Content-Security-Policy nonce
+  (the same one `ActionDispatch` emits), so it runs under a nonce-based
+  `script-src` policy — including `strict-dynamic` — with no configuration. It is
+  a no-op when the app sets no CSP nonce. The runtime config is shipped as a
+  `<script type="application/json">` block (data, not code), so it needs no nonce
+  and stays correct across Turbo visits.
 
 ## Development
 

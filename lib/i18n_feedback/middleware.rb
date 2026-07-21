@@ -18,16 +18,18 @@ module I18nFeedback
       request = Rack::Request.new(env)
       available = I18nFeedback.available?(request)
 
-      # A "?i18n_feedback=true|false" in the URL is a command: it overrides the
-      # cookie for this request and is remembered so the rest of the app stays in
-      # (or out of) suggest mode without the parameter.
-      override = available ? toggle_override(request) : nil
-      marking = available && (override.nil? ? cookie_on?(request) : override)
+      # "?i18n_feedback=true|false" is a one-shot command, not a sticky URL state:
+      # set the cookie and redirect to the same URL without the parameter. That
+      # keeps the cookie the single source of truth (so the pill's reload can turn
+      # suggest mode off) and stops the parameter from lingering in the address bar.
+      if available && request.get? && !(desired = toggle_override(request)).nil?
+        return toggle_redirect(request, desired)
+      end
+
+      marking = available && cookie_on?(request)
       Marking.enabled = marking
 
       status, headers, body = @app.call(env)
-
-      headers = persist_choice(headers, override) if available && !override.nil?
 
       if available && I18nFeedback.config.auto_inject && html?(headers) && !request.xhr?
         status, headers, body = inject(status, headers, body, marking, csp_nonce(env))
@@ -42,6 +44,18 @@ module I18nFeedback
 
     def cookie_on?(request)
       !request.cookies[COOKIE].to_s.empty?
+    end
+
+    def toggle_redirect(request, desired)
+      headers = persist_choice({ 'Content-Type' => 'text/html', 'Location' => url_without_toggle(request) }, desired)
+      [303, headers, []]
+    end
+
+    def url_without_toggle(request)
+      query = Rack::Utils.parse_query(request.query_string)
+      query.delete(I18nFeedback.config.toggle_param)
+      built = Rack::Utils.build_query(query)
+      built.empty? ? request.path : "#{request.path}?#{built}"
     end
 
     # The request's CSP nonce, so the injected scripts run under a nonce-based

@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+## [0.2.2]
+
+- Fix suggest mode desyncing under a nonce-based CSP on Turbo visits. The runtime
+  config now rides in a `<script type="application/json">` block (data, not code)
+  that the widget re-reads on every `turbo:load`, instead of an executable
+  `<script>` the browser refuses to re-run when Turbo re-evaluates it with a stale
+  nonce. Only the widget code carries the CSP nonce now.
+- Treat `?i18n_feedback=true|false` as a one-shot command: the middleware sets the
+  cookie and redirects (303) to the same URL without the parameter. The cookie is
+  now the single source of truth, so the parameter no longer sticks in the address
+  bar and the pill's reload can turn suggest mode off.
+- Let a host's own toggle link work while suggest mode is active. Suggest mode
+  freezes navigation so a stray click can't leave the page mid-proofread, but that
+  also froze a `?i18n_feedback=false` link in your own nav — so the only way out
+  was the pill. Links carrying the toggle parameter are now exempt from the freeze.
+
 ## [0.2.1]
 
 - Keep the suggest pill and active-mode highlighting working across Turbo Drive

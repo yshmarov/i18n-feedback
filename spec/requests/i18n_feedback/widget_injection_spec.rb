@@ -7,7 +7,7 @@ RSpec.describe 'widget injection and key marking', type: :request do
     get '/sample'
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('window.__i18nFeedback')
+    expect(response.body).to include('data-i18n-feedback-config')
     expect(response.body).to include('data-i18n-feedback-widget')
   end
 
@@ -28,20 +28,22 @@ RSpec.describe 'widget injection and key marking', type: :request do
 
     get '/sample'
 
-    expect(response.body).not_to include('window.__i18nFeedback')
+    expect(response.body).not_to include('data-i18n-feedback-widget')
   end
 
-  it 'turns suggest mode on via the toggle parameter and remembers it in a cookie' do
+  it 'turns suggest mode on via the toggle parameter, then redirects to the clean URL' do
     get '/sample', params: { i18n_feedback: 'true' }
 
-    expect(response.body).to include("#{I18nFeedback::Marking::LEFT}sample.greeting#{I18nFeedback::Marking::RIGHT}")
+    expect(response).to have_http_status(:see_other)
+    expect(response.location).to eq('/sample')
     expect(response.cookies['i18n_feedback']).to eq('1')
   end
 
-  it 'turns suggest mode off via the toggle parameter' do
+  it 'turns suggest mode off via the toggle parameter, then redirects to the clean URL' do
     get '/sample', params: { i18n_feedback: 'false' }, headers: { 'HTTP_COOKIE' => 'i18n_feedback=1' }
 
-    expect(response.body).not_to include("#{I18nFeedback::Marking::LEFT}sample.greeting")
+    expect(response).to have_http_status(:see_other)
+    expect(response.location).to eq('/sample')
     expect(response.cookies['i18n_feedback']).to be_blank
   end
 
@@ -53,10 +55,11 @@ RSpec.describe 'widget injection and key marking', type: :request do
     expect(response.body).to include('"showPill":false')
   end
 
-  it 'stamps the injected scripts with the CSP nonce so they run under a nonce-based policy' do
+  it 'stamps the widget script with the CSP nonce, leaving the JSON config (data, not code) unstamped' do
     get '/sample'
 
-    expect(response.body).to include('<script data-i18n-feedback nonce="testnonce">')
     expect(response.body).to include('<script data-i18n-feedback-widget nonce="testnonce">')
+    expect(response.body).to include('<script type="application/json" data-i18n-feedback-config>')
+    expect(response.body).not_to match(/data-i18n-feedback-config[^>]*nonce=/)
   end
 end

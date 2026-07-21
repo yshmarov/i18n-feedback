@@ -1,7 +1,9 @@
 /*
  * i18n_feedback widget — self-contained, no framework, no build step.
  *
- * Reads window.__i18nFeedback = { endpoint, locale, active }.
+ * Reads its config from the <script type="application/json"
+ * data-i18n-feedback-config> the server injects — re-read on every render so a
+ * Turbo visit always reflects the current page's suggest state.
  *
  * A floating pill toggles "suggest mode", which is server state: the pill sets or
  * clears the i18n_feedback cookie and reloads, so the backend only prints the
@@ -14,7 +16,7 @@
 (function () {
   "use strict";
 
-  var config = window.__i18nFeedback;
+  var config = readConfig();
   if (!config || window.__i18nFeedbackLoaded) return;
   window.__i18nFeedbackLoaded = true;
 
@@ -43,8 +45,10 @@
 
   ready(function () {
     // Document-level listeners survive Turbo navigations, so register them once.
+    // handleClick is always attached and gates on the *current* config.active, so
+    // toggling suggest mode across a Turbo visit needs no re-registration.
     document.addEventListener("keydown", handleKeydown);
-    if (config.active) document.addEventListener("click", handleClick, true);
+    document.addEventListener("click", handleClick, true);
 
     // Everything else lives in <body>, which Turbo replaces on every visit —
     // taking the pill and the active-mode highlighting with it. Re-run the
@@ -55,13 +59,24 @@
     document.addEventListener("turbo:frame-load", strip);
   });
 
+  function readConfig() {
+    var el = document.querySelector("script[data-i18n-feedback-config]");
+    if (!el) return null;
+    try {
+      return JSON.parse(el.textContent);
+    } catch (e) {
+      return null;
+    }
+  }
+
   function render() {
+    // Re-read on each visit: the injected config is data (not an executed
+    // script), so it reflects the page Turbo just rendered.
+    config = readConfig() || config;
     injectStyles();
     if (config.showPill !== false) buildPill();
-    if (config.active) {
-      document.documentElement.classList.add("i18nf-active");
-      strip();
-    }
+    document.documentElement.classList.toggle("i18nf-active", !!config.active);
+    if (config.active) strip();
   }
 
   // --- suggest-mode toggle --------------------------------------------------
@@ -112,8 +127,13 @@
   // --- interaction ----------------------------------------------------------
 
   function handleClick(event) {
+    if (!config.active) return;
     if (overlay && overlay.contains(event.target)) return;
     if (event.target.closest && event.target.closest(".i18nf-pill")) return;
+    // Let a host's own suggest-mode toggle link through (e.g. "?i18n_feedback=false"
+    // in a nav menu); otherwise navigation-freezing would trap the user in suggest
+    // mode with no way out but the pill.
+    if (event.target.closest && event.target.closest('a[href*="' + config.toggleParam + '="]')) return;
 
     // Freeze navigation so a stray click can't leave the page mid-proofread.
     event.preventDefault();

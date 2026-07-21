@@ -16,21 +16,30 @@ module I18nFeedback
         @javascript ||= File.read(SOURCE)
       end
 
-      # The two <script> tags to place before </body>: one carrying the runtime
-      # config, one carrying the widget itself. `nonce:` stamps both tags so the
-      # widget runs under a nonce-based Content-Security-Policy (e.g. one using
-      # 'strict-dynamic'); pass nil when the app has no CSP nonce.
+      # The two <script> tags to place before </body>.
+      #
+      # The config rides in a `type="application/json"` block: it is *data*, not
+      # code, so the browser never executes it and Turbo never tries to re-run it
+      # on a soft visit — which means it needs no CSP nonce and, crucially, the
+      # widget can re-read the *current* page's config on every `turbo:load`
+      # instead of being stuck with whatever the last full load evaluated.
+      #
+      # `nonce:` stamps only the widget script (the code), so it runs under a
+      # nonce-based Content-Security-Policy; pass nil when the app has no nonce.
       def snippet(endpoint:, locale:, active:, nonce: nil)
         config = {
           endpoint: endpoint,
           locale: locale.to_s,
           active: active ? true : false,
           showPill: I18nFeedback.config.show_pill ? true : false,
-          pillLabel: I18nFeedback.config.pill_label
+          pillLabel: I18nFeedback.config.pill_label,
+          toggleParam: I18nFeedback.config.toggle_param
         }
+        # Escape "</" so a value can't close the <script> block early.
+        json = config.to_json.gsub('</', '<\/')
         nonce_attr = nonce ? %( nonce="#{nonce}") : ''
 
-        %(<script data-i18n-feedback#{nonce_attr}>window.__i18nFeedback=#{config.to_json};</script>) +
+        %(<script type="application/json" data-i18n-feedback-config>#{json}</script>) +
           %(<script data-i18n-feedback-widget#{nonce_attr}>#{javascript}</script>)
       end
     end

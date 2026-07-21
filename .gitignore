@@ -10,3 +10,7 @@
 Gemfile.lock
 .DS_Store
 *.gem
+
+# Full-resolution demo recording — too large for GitHub (>100MB).
+# The committed GIF and the 640px MP4 are the shareable versions.
+/i18n-feedback-demo.mp4

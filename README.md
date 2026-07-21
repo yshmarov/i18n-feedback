@@ -12,9 +12,9 @@ environments you choose, lets a reviewer click any string in the running app and
 suggest a better wording, and stores those suggestions for a developer to apply.
 It is meant for development and staging, never production.
 
-<!-- Drop the demo GIF here before launch, e.g.:
-![Demo](docs/demo.gif)
--->
+![Click any string in your running app and suggest a better wording](i18n-feedback-demo.gif)
+
+<sub>▶ [Watch in higher quality (MP4)](i18n-feedback-demo-640-high.mp4)</sub>
 
 - **Zero UI dependencies.** The widget is plain JavaScript and styles itself. No
   Tailwind, no daisyUI, no Stimulus, no importmap, no build step.

@@ -38,7 +38,7 @@ module I18nFeedback
           showPill: I18nFeedback.config.show_pill ? true : false,
           pillLabel: I18nFeedback.config.pill_label,
           toggleParam: I18nFeedback.config.toggle_param,
-          labels: labels,
+          labels: labels(locale),
           rtl: rtl?(locale)
         }
         # Escape "</" so a value can't close the <script> block early.
@@ -52,28 +52,36 @@ module I18nFeedback
       private
 
       # Every user-facing string in the widget, resolved through Rails I18n so the
-      # popover follows the app's current locale. Each lookup carries an English
-      # default, so the widget stays fully worded even when the host app hasn't
-      # loaded the gem's locale file or is missing a key for the active locale.
-      def labels
+      # popover matches the locale the page was rendered in. The locale is passed
+      # explicitly (not read from I18n.locale) because auto-injection runs in
+      # middleware *after* the controller action, by which point an
+      # `around_action { I18n.with_locale(...) }` has reset the ambient locale
+      # back to the default. Each lookup carries an English default, so the widget
+      # stays fully worded even for a locale the gem ships no translation for.
+      def labels(locale)
         {
-          pill: t(:pill, 'Suggest edits'),
-          pillActive: t(:pill_active, 'Suggesting — tap to exit (Esc)'),
-          title: t(:title, 'Suggest a translation fix'),
-          currentText: t(:current_text, 'Current text'),
-          suggestedText: t(:suggested_text, 'Suggested text'),
-          comment: t(:comment, 'Comment'),
-          commentPlaceholder: t(:comment_placeholder, 'Optional note for the developer'),
-          priorTitle: t(:prior_title, 'Already suggested (pending)'),
-          cancel: t(:cancel, 'Cancel'),
-          save: t(:save, 'Send suggestion'),
-          errorBlank: t(:error_blank, 'Please enter a suggestion.'),
-          errorSave: t(:error_save, 'Could not save the suggestion.')
+          pill: t(locale, :pill, 'Suggest edits'),
+          pillActive: t(locale, :pill_active, 'Suggesting — tap to exit (Esc)'),
+          title: t(locale, :title, 'Suggest a translation fix'),
+          currentText: t(locale, :current_text, 'Current text'),
+          suggestedText: t(locale, :suggested_text, 'Suggested text'),
+          comment: t(locale, :comment, 'Comment'),
+          commentPlaceholder: t(locale, :comment_placeholder, 'Optional note for the developer'),
+          priorTitle: t(locale, :prior_title, 'Already suggested (pending)'),
+          cancel: t(locale, :cancel, 'Cancel'),
+          save: t(locale, :save, 'Send suggestion'),
+          errorBlank: t(locale, :error_blank, 'Please enter a suggestion.'),
+          errorSave: t(locale, :error_save, 'Could not save the suggestion.')
         }
       end
 
-      def t(key, default)
-        I18n.t(key, scope: :i18n_feedback, default: default)
+      # Resolve under the given locale, tolerating one the app doesn't list in
+      # available_locales (enforce_available_locales would otherwise raise) — the
+      # English default still applies.
+      def t(locale, key, default)
+        I18n.t(key, scope: :i18n_feedback, locale: locale, default: default)
+      rescue I18n::InvalidLocale
+        default
       end
 
       def rtl?(locale)

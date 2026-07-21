@@ -11,8 +11,11 @@ module I18nFeedback
     RIGHT = '⟧'
 
     # Skip format/lookup namespaces — marking these would corrupt number, date,
-    # and currency formatting and interpolation strings.
-    SKIP = /(\A|\.)(number|date|time|datetime|support)(\.|\z)|formats?\z/
+    # and currency formatting and interpolation strings. The tool's own
+    # `i18n_feedback.*` strings are skipped too: they aren't part of the host
+    # app's translatable copy, so the widget must never mark (or offer to edit)
+    # its own UI.
+    SKIP = /(\A|\.)(number|date|time|datetime|support|i18n_feedback)(\.|\z)|formats?\z/
 
     class << self
       def enabled?

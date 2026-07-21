@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+## [0.3.1]
+
+- Fix the widget showing raw key markers (e.g. `⟦i18n_feedback.title⟧`) in its own
+  popover while suggest mode was on. The key-marking backend was tagging the
+  tool's own `i18n_feedback.*` strings; those are not part of the host app's
+  translatable copy, so they're now always skipped — the widget never marks or
+  offers to edit its own UI.
+- Fix the popover not following the page's language under auto-injection. The
+  widget is injected in middleware *after* the controller action, so an
+  `around_action { I18n.with_locale(...) }` had already reset `I18n.locale` back
+  to the default — the popover (and the saved suggestion's `locale`) came out in
+  the wrong language. The locale is now read from the page's rendered
+  `<html lang>` attribute and labels resolve under it explicitly.
+
 ## [0.3.0]
 
 - Localize the widget's own UI. Every string in the pill and the suggestion

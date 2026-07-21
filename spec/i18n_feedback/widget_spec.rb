@@ -45,6 +45,27 @@ RSpec.describe I18nFeedback::Widget do
     it 'falls back to English for a locale with no shipped translation' do
       expect(I18n.t(:save, scope: :i18n_feedback, locale: :xx, default: 'Send suggestion')).to eq('Send suggestion')
     end
+
+    it 'resolves labels under the requested locale, not the ambient I18n.locale' do
+      config = I18n.with_locale(:en) do
+        config_from(described_class.snippet(endpoint: '/x', locale: :fr, active: false))
+      end
+
+      expect(config['labels']['save']).to eq('Envoyer la suggestion')
+    end
+
+    it 'lets the host override a shipped label from its own locale files' do
+      # Force the lazy load first; otherwise the next translate reloads from disk
+      # and wipes the store_translations override before snippet reads it.
+      I18n.t(:save, scope: :i18n_feedback, locale: :fr)
+      I18n.backend.store_translations(:fr, i18n_feedback: { save: 'Soumettre' })
+
+      config = config_from(described_class.snippet(endpoint: '/x', locale: :fr, active: false))
+
+      expect(config['labels']['save']).to eq('Soumettre')
+    ensure
+      I18n.reload!
+    end
   end
 
   describe '.snippet direction' do

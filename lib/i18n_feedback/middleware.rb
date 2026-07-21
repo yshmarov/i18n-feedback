@@ -101,6 +101,24 @@ module I18nFeedback
       content_type(headers).to_s.include?('text/html')
     end
 
+    # The locale the page was actually rendered in, read from its `<html lang>`
+    # attribute. Auto-injection runs after the controller action, so I18n.locale
+    # may already have been reset from whatever the request used — the rendered
+    # `lang` is the reliable record of the page's language. Falls back to the
+    # ambient locale when the page declares none.
+    def page_locale(html)
+      lang = html[/<html[^>]*\blang=["']([^"']+)["']/i, 1]
+      (lang && normalize_locale(lang)) || I18n.locale
+    end
+
+    # Map an HTML lang value ("es", "pt-BR") to a locale the app actually offers,
+    # trying the value as-is, its underscore form, then its language subtag. nil
+    # if none match, so the caller can fall back rather than emit an unknown one.
+    def normalize_locale(lang)
+      available = I18n.available_locales.map(&:to_s)
+      [lang, lang.tr('-', '_'), lang.split(/[-_]/).first].uniq.find { |c| available.include?(c) }&.to_sym
+    end
+
     def content_type(headers)
       headers['Content-Type'] || headers['content-type']
     end
@@ -112,7 +130,7 @@ module I18nFeedback
 
       snippet = Widget.snippet(
         endpoint: I18nFeedback.config.suggestions_endpoint,
-        locale: I18n.locale,
+        locale: page_locale(html),
         active: marking,
         nonce: nonce
       )

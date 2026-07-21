@@ -23,6 +23,15 @@ RSpec.describe 'widget injection and key marking', type: :request do
     expect(response.body).to include("#{I18nFeedback::Marking::LEFT}sample.greeting#{I18nFeedback::Marking::RIGHT}")
   end
 
+  it 'never marks its own UI strings, even in suggest mode' do
+    get '/sample', headers: { 'HTTP_COOKIE' => 'i18n_feedback=1' }
+
+    config = response.body[%r{data-i18n-feedback-config>(.*?)</script>}m, 1]
+    expect(config).to include('"labels":')
+    expect(config).not_to include(I18nFeedback::Marking::LEFT)
+    expect(config).not_to include('i18n_feedback.title')
+  end
+
   it 'injects nothing when the tool is unavailable' do
     I18nFeedback.config.enabled = ->(_request) { false }
 
@@ -61,15 +70,21 @@ RSpec.describe 'widget injection and key marking', type: :request do
     expect(response.body).to include('"cancel":"Annuler"')
   end
 
-  it 'lets the host override a shipped label from its own locale files' do
-    # store_translations mutates the process-wide backend, so undo it afterward
-    # to keep the shipped-translation example order-independent.
-    I18n.backend.store_translations(:fr, i18n_feedback: { save: 'Soumettre' })
-    I18n.with_locale(:fr) { get '/sample' }
+  it 'follows the page\'s rendered language even when the ambient locale was reset' do
+    # The page renders in French while I18n.locale stays :en — the situation an
+    # `around_action { I18n.with_locale(...) }` leaves the middleware in.
+    get '/sample', params: { page_lang: 'fr' }
 
-    expect(response.body).to include('"save":"Soumettre"')
-  ensure
-    I18n.reload!
+    expect(I18n.locale).to eq(:en)
+    expect(response.body).to include('"locale":"fr"')
+    expect(response.body).to include('"save":"Envoyer la suggestion"')
+  end
+
+  it 'falls back to the ambient locale when the page language is not an available locale' do
+    get '/sample', params: { page_lang: 'de' } # de is not in the dummy app's available_locales
+
+    expect(response.body).to include('"locale":"en"')
+    expect(response.body).to include('"save":"Send suggestion"')
   end
 
   it 'omits the pill from the injected config when show_pill is false' do

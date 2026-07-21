@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.2.1]
+
+- Keep the suggest pill and active-mode highlighting working across Turbo Drive
+  navigations. Turbo replaces `<body>` on each visit, which removed the pill; the
+  widget now re-runs its per-page setup on `turbo:load` instead of only on the
+  initial load, so it no longer requires a hard reload.
+
 ## [0.2.0]
 
 - Stamp the injected widget scripts with the request's Content-Security-Policy

@@ -42,18 +42,27 @@
   }
 
   ready(function () {
+    // Document-level listeners survive Turbo navigations, so register them once.
+    document.addEventListener("keydown", handleKeydown);
+    if (config.active) document.addEventListener("click", handleClick, true);
+
+    // Everything else lives in <body>, which Turbo replaces on every visit —
+    // taking the pill and the active-mode highlighting with it. Re-run the
+    // per-page setup on each visit so the widget keeps working without a hard
+    // reload. render() also runs now for the initial (or non-Turbo) load.
+    render();
+    document.addEventListener("turbo:load", render);
+    document.addEventListener("turbo:frame-load", strip);
+  });
+
+  function render() {
     injectStyles();
     if (config.showPill !== false) buildPill();
-    document.addEventListener("keydown", handleKeydown);
-
     if (config.active) {
       document.documentElement.classList.add("i18nf-active");
-      document.addEventListener("click", handleClick, true);
-      document.addEventListener("turbo:load", strip);
-      document.addEventListener("turbo:frame-load", strip);
       strip();
     }
-  });
+  }
 
   // --- suggest-mode toggle --------------------------------------------------
 
@@ -123,6 +132,9 @@
   // --- pill -----------------------------------------------------------------
 
   function buildPill() {
+    var existing = document.querySelector(".i18nf-pill");
+    if (existing) existing.remove();
+
     var pill = document.createElement("button");
     pill.type = "button";
     pill.className = "i18nf-pill" + (config.active ? " i18nf-pill-on" : "");

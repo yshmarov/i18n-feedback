@@ -1,0 +1,14 @@
+en:
+  i18n_feedback:
+    pill: "Suggest edits"
+    pill_active: "Suggesting — tap to exit (Esc)"
+    title: "Suggest a translation fix"
+    current_text: "Current text"
+    suggested_text: "Suggested text"
+    comment: "Comment"
+    comment_placeholder: "Optional note for the developer"
+    prior_title: "Already suggested (pending)"
+    cancel: "Cancel"
+    save: "Send suggestion"
+    error_blank: "Please enter a suggestion."
+    error_save: "Could not save the suggestion."

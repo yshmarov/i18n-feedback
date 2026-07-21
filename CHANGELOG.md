@@ -2,6 +2,27 @@
 
 ## [Unreleased]
 
+## [0.3.0]
+
+- Localize the widget's own UI. Every string in the pill and the suggestion
+  popover now resolves through Rails I18n under the `i18n_feedback.*` scope and
+  follows the app's current `I18n.locale`, so the tool speaks the same language as
+  the app being proofread. Any key a host hasn't translated falls back to English
+  — so nothing goes blank in a locale you haven't fully covered. Override any
+  string by defining the matching key in your own locale files.
+- Ship translations out of the box for 20 languages in addition to English:
+  Arabic, Bengali, Chinese (Simplified), Dutch, French, German, Hindi, Indonesian,
+  Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Thai, Turkish,
+  Ukrainian, Urdu and Vietnamese.
+- Render the popover right-to-left for RTL locales (Arabic, Urdu, and other RTL
+  scripts), detected from the active locale's language subtag. The i18n key stays
+  left-to-right, since it's a code identifier rather than prose.
+- `config.pill_label` now defaults to `nil`, meaning "use the localized default".
+  Setting it to a string still overrides the pill text as before.
+- The widget now follows the operating system's light/dark/system appearance via
+  `prefers-color-scheme`. The pill and popover render with a dark surface when the
+  reviewer's system is in dark mode, with no configuration required.
+
 ## [0.2.2]
 
 - Fix suggest mode desyncing under a nonce-based CSP on Turbo visits. The runtime

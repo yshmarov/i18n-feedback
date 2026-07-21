@@ -47,6 +47,31 @@ RSpec.describe 'widget injection and key marking', type: :request do
     expect(response.cookies['i18n_feedback']).to be_blank
   end
 
+  it 'injects localized UI labels into the config' do
+    get '/sample'
+
+    expect(response.body).to include('"labels":')
+    expect(response.body).to include('"save":"Send suggestion"')
+  end
+
+  it 'follows the app locale for the widget labels using the shipped translations' do
+    I18n.with_locale(:fr) { get '/sample' }
+
+    expect(response.body).to include('"save":"Envoyer la suggestion"')
+    expect(response.body).to include('"cancel":"Annuler"')
+  end
+
+  it 'lets the host override a shipped label from its own locale files' do
+    # store_translations mutates the process-wide backend, so undo it afterward
+    # to keep the shipped-translation example order-independent.
+    I18n.backend.store_translations(:fr, i18n_feedback: { save: 'Soumettre' })
+    I18n.with_locale(:fr) { get '/sample' }
+
+    expect(response.body).to include('"save":"Soumettre"')
+  ensure
+    I18n.reload!
+  end
+
   it 'omits the pill from the injected config when show_pill is false' do
     I18nFeedback.config.show_pill = false
 

@@ -1,0 +1,14 @@
+pl:
+  i18n_feedback:
+    pill: "Zaproponuj zmiany"
+    pill_active: "Tryb sugestii — dotknij, aby wyjść (Esc)"
+    title: "Zaproponuj poprawkę tłumaczenia"
+    current_text: "Bieżący tekst"
+    suggested_text: "Proponowany tekst"
+    comment: "Komentarz"
+    comment_placeholder: "Opcjonalna notatka dla programisty"
+    prior_title: "Już zaproponowano (oczekujące)"
+    cancel: "Anuluj"
+    save: "Wyślij sugestię"
+    error_blank: "Wprowadź sugestię."
+    error_save: "Nie udało się zapisać sugestii."

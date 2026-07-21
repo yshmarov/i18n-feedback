@@ -38,7 +38,8 @@ module I18nFeedback
     # from your own link instead (see #toggle_param).
     attr_accessor :show_pill
 
-    # Text on the floating toggle pill.
+    # Text on the floating toggle pill. Leave nil to use the localized default
+    # ("Suggest edits", translated via the `i18n_feedback.pill` I18n key).
     attr_accessor :pill_label
 
     # The query-string parameter that turns suggest mode on/off, so a host can
@@ -56,7 +57,7 @@ module I18nFeedback
       @auto_inject = true
       @mount_path = '/i18n_feedback'
       @show_pill = true
-      @pill_label = 'Suggest edits'
+      @pill_label = nil
       @toggle_param = 'i18n_feedback'
     end
 

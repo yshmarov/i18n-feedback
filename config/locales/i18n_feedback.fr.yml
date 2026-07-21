@@ -1,0 +1,14 @@
+fr:
+  i18n_feedback:
+    pill: "Proposer des corrections"
+    pill_active: "En cours — appuyez pour quitter (Échap)"
+    title: "Proposer une correction de traduction"
+    current_text: "Texte actuel"
+    suggested_text: "Texte proposé"
+    comment: "Commentaire"
+    comment_placeholder: "Note facultative pour le développeur"
+    prior_title: "Déjà proposé (en attente)"
+    cancel: "Annuler"
+    save: "Envoyer la suggestion"
+    error_blank: "Veuillez saisir une suggestion."
+    error_save: "Impossible d'enregistrer la suggestion."

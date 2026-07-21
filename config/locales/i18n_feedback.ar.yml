@@ -1,0 +1,14 @@
+ar:
+  i18n_feedback:
+    pill: "اقترح تعديلات"
+    pill_active: "وضع الاقتراح — اضغط للخروج (Esc)"
+    title: "اقترح تصحيحًا للترجمة"
+    current_text: "النص الحالي"
+    suggested_text: "النص المقترح"
+    comment: "تعليق"
+    comment_placeholder: "ملاحظة اختيارية للمطور"
+    prior_title: "تم اقتراحه مسبقًا (قيد الانتظار)"
+    cancel: "إلغاء"
+    save: "إرسال الاقتراح"
+    error_blank: "يرجى إدخال اقتراح."
+    error_save: "تعذّر حفظ الاقتراح."

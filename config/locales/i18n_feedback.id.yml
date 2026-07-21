@@ -1,0 +1,14 @@
+id:
+  i18n_feedback:
+    pill: "Sarankan perubahan"
+    pill_active: "Menyarankan — ketuk untuk keluar (Esc)"
+    title: "Sarankan perbaikan terjemahan"
+    current_text: "Teks saat ini"
+    suggested_text: "Teks yang disarankan"
+    comment: "Komentar"
+    comment_placeholder: "Catatan opsional untuk pengembang"
+    prior_title: "Sudah disarankan (menunggu)"
+    cancel: "Batal"
+    save: "Kirim saran"
+    error_blank: "Silakan masukkan saran."
+    error_save: "Tidak dapat menyimpan saran."

@@ -1,0 +1,14 @@
+de:
+  i18n_feedback:
+    pill: "Änderungen vorschlagen"
+    pill_active: "Vorschlagsmodus — zum Beenden tippen (Esc)"
+    title: "Übersetzungskorrektur vorschlagen"
+    current_text: "Aktueller Text"
+    suggested_text: "Vorgeschlagener Text"
+    comment: "Kommentar"
+    comment_placeholder: "Optionale Notiz für die Entwicklung"
+    prior_title: "Bereits vorgeschlagen (ausstehend)"
+    cancel: "Abbrechen"
+    save: "Vorschlag senden"
+    error_blank: "Bitte gib einen Vorschlag ein."
+    error_save: "Der Vorschlag konnte nicht gespeichert werden."

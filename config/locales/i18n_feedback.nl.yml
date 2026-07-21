@@ -1,0 +1,14 @@
+nl:
+  i18n_feedback:
+    pill: "Wijzigingen voorstellen"
+    pill_active: "Aan het voorstellen — tik om te sluiten (Esc)"
+    title: "Een vertaalcorrectie voorstellen"
+    current_text: "Huidige tekst"
+    suggested_text: "Voorgestelde tekst"
+    comment: "Opmerking"
+    comment_placeholder: "Optionele notitie voor de ontwikkelaar"
+    prior_title: "Al voorgesteld (in behandeling)"
+    cancel: "Annuleren"
+    save: "Suggestie versturen"
+    error_blank: "Voer een suggestie in."
+    error_save: "Kan de suggestie niet opslaan."

@@ -177,6 +177,49 @@ Set `config.auto_inject = false` and drop the helper at the end of your layout:
 
 It renders nothing unless the tool is available for the request.
 
+### Localizing the widget UI
+
+The pill and the suggestion popover speak the app's language: every string
+resolves through Rails I18n under the `i18n_feedback.*` scope and follows the
+current `I18n.locale`. Translations ship out of the box for English plus 20 more
+languages — Arabic, Bengali, Chinese (Simplified), Dutch, French, German, Hindi,
+Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish,
+Thai, Turkish, Ukrainian, Urdu and Vietnamese — so the tool is already localized
+for most apps. RTL locales (Arabic, Urdu, …) render the popover right-to-left
+automatically.
+
+Any key you haven't translated falls back to English, so a partially translated
+locale never leaves a control blank. To add a language, or reword the bundled
+copy, define the keys in your own locale files (yours win over the gem's):
+
+```yaml
+# config/locales/fr.yml
+fr:
+  i18n_feedback:
+    pill: "Proposer des corrections"
+    pill_active: "En cours — appuyez pour quitter (Échap)"
+    title: "Proposer une correction de traduction"
+    current_text: "Texte actuel"
+    suggested_text: "Texte proposé"
+    comment: "Commentaire"
+    comment_placeholder: "Note facultative pour le développeur"
+    prior_title: "Déjà proposé (en attente)"
+    cancel: "Annuler"
+    save: "Envoyer la suggestion"
+    error_blank: "Veuillez saisir une suggestion."
+    error_save: "Impossible d'enregistrer la suggestion."
+```
+
+`config.pill_label` still overrides the pill text with a fixed string if you set
+it; leave it `nil` (the default) to use the localized `i18n_feedback.pill` key.
+
+### Light / dark / system appearance
+
+The widget follows the reviewer's operating-system appearance via
+`prefers-color-scheme` — no configuration needed. The pill and popover render on a
+dark surface when the system is in dark mode and a light surface otherwise; the
+blue accent stays the same in both.
+
 ## Reviewing suggestions
 
 Suggestions are ordinary records:

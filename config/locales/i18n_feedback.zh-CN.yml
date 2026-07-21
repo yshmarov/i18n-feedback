@@ -1,0 +1,14 @@
+zh-CN:
+  i18n_feedback:
+    pill: "建议修改"
+    pill_active: "建议中 — 点击退出（Esc）"
+    title: "建议翻译修正"
+    current_text: "当前文本"
+    suggested_text: "建议文本"
+    comment: "备注"
+    comment_placeholder: "给开发者的可选备注"
+    prior_title: "已提交建议（待处理）"
+    cancel: "取消"
+    save: "发送建议"
+    error_blank: "请输入建议。"
+    error_save: "无法保存建议。"

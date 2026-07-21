@@ -158,13 +158,19 @@
     var pill = document.createElement("button");
     pill.type = "button";
     pill.className = "i18nf-pill" + (config.active ? " i18nf-pill-on" : "");
-    pill.textContent = config.active ? "✓ Suggesting — tap to exit (Esc)" : "✎ " + labelText();
+    pill.textContent = config.active ? "✓ " + t("pillActive", "Suggesting — tap to exit (Esc)") : "✎ " + labelText();
     pill.addEventListener("click", toggle);
     document.body.appendChild(pill);
   }
 
   function labelText() {
-    return (config.pillLabel || "Suggest edits");
+    return config.pillLabel || t("pill", "Suggest edits");
+  }
+
+  // Resolve a server-translated label, falling back to English if the config
+  // predates the labels payload (e.g. a cached page from an older gem version).
+  function t(name, fallback) {
+    return (config.labels && config.labels[name]) || fallback;
   }
 
   // --- popover --------------------------------------------------------------
@@ -178,18 +184,21 @@
     });
 
     var panel = el("div", "i18nf-panel");
+    // Mirror the popover for right-to-left locales (Arabic, Urdu, …). The i18n
+    // key stays LTR — it's a code identifier, not prose (see heading()).
+    panel.dir = config.rtl ? "rtl" : "ltr";
     panel.appendChild(heading(key));
 
     priorNode = el("div");
     panel.appendChild(priorNode);
 
-    panel.appendChild(field("Current text", readonly(currentValue)));
+    panel.appendChild(field(t("currentText", "Current text"), readonly(currentValue)));
 
     proposedInput = textarea(currentValue);
-    panel.appendChild(field("Suggested text", proposedInput));
+    panel.appendChild(field(t("suggestedText", "Suggested text"), proposedInput));
 
-    commentInput = input("Optional note for the developer");
-    panel.appendChild(field("Comment", commentInput));
+    commentInput = input(t("commentPlaceholder", "Optional note for the developer"));
+    panel.appendChild(field(t("comment", "Comment"), commentInput));
 
     errorNode = el("p", "i18nf-error");
     errorNode.style.display = "none";
@@ -229,7 +238,7 @@
 
     var box = el("div", "i18nf-prior");
     var title = el("p", "i18nf-prior-title");
-    title.textContent = "Already suggested (pending)";
+    title.textContent = t("priorTitle", "Already suggested (pending)");
     box.appendChild(title);
 
     var list = el("ul", "i18nf-prior-list");
@@ -250,12 +259,12 @@
 
     var cancel = el("button", "i18nf-btn i18nf-btn-ghost");
     cancel.type = "button";
-    cancel.textContent = "Cancel";
+    cancel.textContent = t("cancel", "Cancel");
     cancel.addEventListener("click", close);
 
     saveButton = el("button", "i18nf-btn i18nf-btn-primary");
     saveButton.type = "button";
-    saveButton.textContent = "Send suggestion";
+    saveButton.textContent = t("save", "Send suggestion");
     saveButton.addEventListener("click", function () {
       submit(key, currentValue);
     });
@@ -268,7 +277,7 @@
   function submit(key, currentValue) {
     var proposed = proposedInput.value.trim();
     if (!proposed) {
-      showError("Please enter a suggestion.");
+      showError(t("errorBlank", "Please enter a suggestion."));
       return;
     }
 
@@ -297,7 +306,7 @@
           close();
         } else {
           saveButton.disabled = false;
-          showError("Could not save the suggestion.");
+          showError(t("errorSave", "Could not save the suggestion."));
         }
       })
       .catch(function () {
@@ -316,8 +325,9 @@
   function heading(key) {
     var wrapper = el("div", "i18nf-heading");
     var title = el("p", "i18nf-title");
-    title.textContent = "Suggest a translation fix";
+    title.textContent = t("title", "Suggest a translation fix");
     var code = el("code", "i18nf-key");
+    code.dir = "ltr"; // the key is a code path, never RTL prose
     code.textContent = key;
     wrapper.appendChild(title);
     wrapper.appendChild(code);
@@ -405,6 +415,28 @@
       ".i18nf-btn-ghost { background: transparent; color: #111; }",
       ".i18nf-btn-primary { background: #2563eb; color: #fff; }",
       ".i18nf-btn[disabled] { opacity: .6; cursor: default; }",
+
+      // Follow the OS light/dark/system setting via prefers-color-scheme, so the
+      // widget matches whatever the reviewer's system is set to without any extra
+      // configuration. Only the surfaces that carry their own background/color
+      // above are overridden here — the blue accents stay the same in both themes.
+      "@media (prefers-color-scheme: dark) {",
+      "  .i18nf-pill { background: #1f1f23; color: #f4f4f5; border-color: rgba(255,255,255,.18);",
+      "    box-shadow: 0 4px 14px rgba(0,0,0,.5); }",
+      "  .i18nf-pill-on { background: #2563eb; color: #fff; border-color: #2563eb; }",
+      "  .i18nf-overlay { background: rgba(0,0,0,.65); }",
+      "  .i18nf-panel { background: #1f1f23; color: #f4f4f5;",
+      "    box-shadow: 0 20px 60px rgba(0,0,0,.7); }",
+      "  .i18nf-key { color: #a1a1aa; }",
+      "  .i18nf-label { color: #a1a1aa; }",
+      "  .i18nf-readonly { background: #2a2a30; }",
+      "  .i18nf-input { background: #2a2a30; color: #f4f4f5; border-color: #3f3f46; }",
+      "  .i18nf-input::placeholder { color: #71717a; }",
+      "  .i18nf-prior { background: #2a2a30; }",
+      "  .i18nf-prior-title { color: #d4d4d8; }",
+      "  .i18nf-error { color: #f87171; }",
+      "  .i18nf-btn-ghost { color: #f4f4f5; }",
+      "}",
     ].join("\n");
     document.head.appendChild(style);
   }

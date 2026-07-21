@@ -1,0 +1,14 @@
+hi:
+  i18n_feedback:
+    pill: "बदलाव सुझाएँ"
+    pill_active: "सुझाव मोड — बाहर निकलने के लिए टैप करें (Esc)"
+    title: "अनुवाद सुधार सुझाएँ"
+    current_text: "वर्तमान टेक्स्ट"
+    suggested_text: "सुझाया गया टेक्स्ट"
+    comment: "टिप्पणी"
+    comment_placeholder: "डेवलपर के लिए वैकल्पिक टिप्पणी"
+    prior_title: "पहले से सुझाया गया (लंबित)"
+    cancel: "रद्द करें"
+    save: "सुझाव भेजें"
+    error_blank: "कृपया एक सुझाव दर्ज करें।"
+    error_save: "सुझाव सहेजा नहीं जा सका।"

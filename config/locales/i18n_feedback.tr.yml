@@ -1,0 +1,14 @@
+tr:
+  i18n_feedback:
+    pill: "Düzenleme öner"
+    pill_active: "Öneri modu — çıkmak için dokun (Esc)"
+    title: "Çeviri düzeltmesi öner"
+    current_text: "Mevcut metin"
+    suggested_text: "Önerilen metin"
+    comment: "Yorum"
+    comment_placeholder: "Geliştirici için isteğe bağlı not"
+    prior_title: "Zaten önerildi (beklemede)"
+    cancel: "İptal"
+    save: "Öneriyi gönder"
+    error_blank: "Lütfen bir öneri girin."
+    error_save: "Öneri kaydedilemedi."

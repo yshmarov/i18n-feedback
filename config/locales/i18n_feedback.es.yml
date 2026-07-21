@@ -1,0 +1,14 @@
+es:
+  i18n_feedback:
+    pill: "Sugerir cambios"
+    pill_active: "Sugiriendo — toca para salir (Esc)"
+    title: "Sugerir una corrección de traducción"
+    current_text: "Texto actual"
+    suggested_text: "Texto sugerido"
+    comment: "Comentario"
+    comment_placeholder: "Nota opcional para el desarrollador"
+    prior_title: "Ya sugerido (pendiente)"
+    cancel: "Cancelar"
+    save: "Enviar sugerencia"
+    error_blank: "Introduce una sugerencia."
+    error_save: "No se pudo guardar la sugerencia."

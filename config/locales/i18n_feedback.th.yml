@@ -1,0 +1,14 @@
+th:
+  i18n_feedback:
+    pill: "แนะนำการแก้ไข"
+    pill_active: "กำลังแนะนำ — แตะเพื่อออก (Esc)"
+    title: "แนะนำการแก้ไขคำแปล"
+    current_text: "ข้อความปัจจุบัน"
+    suggested_text: "ข้อความที่แนะนำ"
+    comment: "ความคิดเห็น"
+    comment_placeholder: "หมายเหตุเพิ่มเติมสำหรับนักพัฒนา"
+    prior_title: "แนะนำไปแล้ว (รอดำเนินการ)"
+    cancel: "ยกเลิก"
+    save: "ส่งคำแนะนำ"
+    error_blank: "โปรดป้อนคำแนะนำ"
+    error_save: "ไม่สามารถบันทึกคำแนะนำได้"

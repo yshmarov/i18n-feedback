@@ -1,0 +1,14 @@
+ja:
+  i18n_feedback:
+    pill: "修正を提案"
+    pill_active: "提案中 — タップで終了（Esc）"
+    title: "翻訳の修正を提案"
+    current_text: "現在のテキスト"
+    suggested_text: "提案するテキスト"
+    comment: "コメント"
+    comment_placeholder: "開発者への任意のメモ"
+    prior_title: "提案済み（保留中）"
+    cancel: "キャンセル"
+    save: "提案を送信"
+    error_blank: "提案を入力してください。"
+    error_save: "提案を保存できませんでした。"

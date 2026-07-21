@@ -1,0 +1,14 @@
+ko:
+  i18n_feedback:
+    pill: "수정 제안"
+    pill_active: "제안 중 — 종료하려면 탭하세요 (Esc)"
+    title: "번역 수정 제안"
+    current_text: "현재 텍스트"
+    suggested_text: "제안 텍스트"
+    comment: "의견"
+    comment_placeholder: "개발자를 위한 선택 메모"
+    prior_title: "이미 제안됨 (대기 중)"
+    cancel: "취소"
+    save: "제안 보내기"
+    error_blank: "제안을 입력하세요."
+    error_save: "제안을 저장할 수 없습니다."

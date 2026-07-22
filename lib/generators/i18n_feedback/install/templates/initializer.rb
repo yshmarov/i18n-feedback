@@ -41,4 +41,9 @@ I18nFeedback.configure do |config|
   # ticket. Runs inline after save, so keep it fast or hand off to a job.
   #
   # config.on_submit = ->(suggestion) { SuggestionMailer.with(suggestion:).created.deliver_later }
+
+  # Per-IP throttle on the submission endpoint, passed to Rails' built-in rate
+  # limiter (Rails 7.2+; ignored on 7.1). Set nil to disable.
+  #
+  # config.rate_limit = { to: 30, within: 60 }
 end

@@ -74,6 +74,10 @@ RSpec.describe 'I18nFeedback::Suggestions', type: :request do
     end
 
     it 'throttles a flood of submissions from one IP with a 429' do
+      # Rate limiting rides on Rails' built-in limiter (7.2+); on 7.1 the macro
+      # is skipped and there is nothing to assert.
+      skip 'rate limiting requires Rails 7.2+' unless I18nFeedback::SuggestionsController.respond_to?(:rate_limit)
+
       # The active limit is baked into the controller at load time from the
       # default config; read it from a fresh Configuration rather than hardcoding.
       limit = I18nFeedback::Configuration.new.rate_limit.fetch(:to)

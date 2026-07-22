@@ -8,6 +8,7 @@
 /spec/dummy/db/*.sqlite3
 /spec/examples.txt
 Gemfile.lock
+gemfiles/*.lock
 .DS_Store
 *.gem
 

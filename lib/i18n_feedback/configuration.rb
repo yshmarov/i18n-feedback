@@ -52,6 +52,11 @@ module I18nFeedback
     # ticket. Runs inline after save; keep it fast or hand off to a job.
     attr_accessor :on_submit
 
+    # Per-IP throttle for the public submission endpoint, as keyword arguments
+    # for Rails' rate limiter (Rails 7.2+; ignored on 7.1). Read once when the
+    # controller loads — set it in an initializer. nil disables throttling.
+    attr_accessor :rate_limit
+
     def initialize
       @enabled_environments = %w[development staging]
       @enabled = ->(_request) { true }
@@ -64,6 +69,7 @@ module I18nFeedback
       @pill_label = nil
       @toggle_param = 'i18n_feedback'
       @on_submit = ->(_suggestion) {}
+      @rate_limit = { to: 30, within: 60 }
     end
 
     def environment_enabled?

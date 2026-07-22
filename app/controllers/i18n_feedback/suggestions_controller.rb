@@ -2,12 +2,26 @@
 
 module I18nFeedback
   class SuggestionsController < ApplicationController
+    # Throttle the public submission endpoint per IP so one user or bot can't
+    # flood the table. Uses the rate limiter built into Rails 7.2+ (backed by
+    # Rails.cache); a no-op on Rails 7.1. Tune or disable via config.rate_limit —
+    # read once at boot, after the host's initializer.
+    if respond_to?(:rate_limit) && I18nFeedback.config.rate_limit
+      rate_limit(**I18nFeedback.config.rate_limit,
+                 only: :create,
+                 with: lambda {
+                   render json: { errors: ['Too many suggestions. Please slow down and try again.'] },
+                          status: :too_many_requests
+                 })
+    end
+
     # Pending suggestions for one key/locale, shown as read-only context when the
     # proofreader reopens the popover for a string someone already flagged.
     def index
       suggestions = Suggestion
                     .where(translation_key: params[:key], locale: params[:locale])
-                    .order(id: :desc)
+                    .status_pending
+                    .newest_first
                     .limit(20)
 
       render json: suggestions.map { |suggestion| suggestion_json(suggestion) }

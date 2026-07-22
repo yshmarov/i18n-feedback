@@ -72,6 +72,20 @@ RSpec.describe 'I18nFeedback::Suggestions', type: :request do
 
       expect(ran).to be(false)
     end
+
+    it 'throttles a flood of submissions from one IP with a 429' do
+      # The active limit is baked into the controller at load time from the
+      # default config; read it from a fresh Configuration rather than hardcoding.
+      limit = I18nFeedback::Configuration.new.rate_limit.fetch(:to)
+
+      limit.times do
+        post '/i18n_feedback/suggestions', params: valid_params
+        expect(response).to have_http_status(:created)
+      end
+
+      post '/i18n_feedback/suggestions', params: valid_params
+      expect(response).to have_http_status(:too_many_requests)
+    end
   end
 
   describe 'GET /i18n_feedback/suggestions' do
@@ -85,6 +99,17 @@ RSpec.describe 'I18nFeedback::Suggestions', type: :request do
       body = response.parsed_body
       expect(body.size).to eq(1)
       expect(body.first['proposed_value']).to eq('Hi')
+    end
+
+    it 'shows only pending suggestions as context, not applied or rejected ones' do
+      I18nFeedback::Suggestion.create!(translation_key: 'sample.greeting', locale: 'en', proposed_value: 'Pending one')
+      I18nFeedback::Suggestion.create!(translation_key: 'sample.greeting', locale: 'en', proposed_value: 'Applied one',
+                                       status: 'applied')
+
+      get '/i18n_feedback/suggestions', params: { key: 'sample.greeting', locale: 'en' }
+
+      values = response.parsed_body.map { |item| item['proposed_value'] }
+      expect(values).to eq(['Pending one'])
     end
   end
 end

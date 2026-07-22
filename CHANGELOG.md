@@ -2,6 +2,34 @@
 
 ## [Unreleased]
 
+## [0.5.0]
+
+- Add a `status` to each suggestion — a string-backed Active Record enum with
+  values `pending`, `applied`, and `rejected` (`I18nFeedback::Suggestion::STATUSES`),
+  `status_`-prefixed (`status_applied?`, `status_applied!`, `Suggestion.status_pending`)
+  plus a `newest_first` scope. New suggestions start `pending`; the popover's
+  "already suggested" context now shows only pending ones, so applied/rejected
+  wordings stop resurfacing.
+
+  **Upgrading an existing install:** add the column with a migration —
+
+  ```ruby
+  add_column :i18n_feedback_suggestions, :status, :string, null: false, default: "pending"
+  add_index  :i18n_feedback_suggestions, :status
+  ```
+
+- Harden the public submission endpoint against abuse:
+  - Per-IP rate limiting via Rails' built-in limiter (Rails 7.2+; a no-op on
+    7.1). Default 30 requests / 60s, tunable or disable-able via
+    `config.rate_limit`; returns `429 Too Many Requests`.
+  - Length caps on the stored free-text fields (`proposed_value` / `old_value`
+    5000, `comment` / `page_url` 2000, `translation_key` 500) so a client can't
+    bloat the table with unbounded input.
+
+- Add a `.github/workflows/release.yml` that publishes to RubyGems via trusted
+  publishing (OIDC) when a `v*` tag is pushed — no stored credentials or MFA
+  prompt.
+
 ## [0.4.0]
 
 - Add a `config.on_submit` hook, called with each saved suggestion right after

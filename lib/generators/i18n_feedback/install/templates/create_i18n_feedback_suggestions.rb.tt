@@ -9,6 +9,7 @@ class CreateI18nFeedbackSuggestions < ActiveRecord::Migration<%= migration_versi
       t.text :proposed_value, null: false
       t.text :comment
       t.string :page_url
+      t.string :status, null: false, default: 'pending'
       t.string :author_id
       t.string :author_label
 
@@ -16,5 +17,6 @@ class CreateI18nFeedbackSuggestions < ActiveRecord::Migration<%= migration_versi
     end
 
     add_index :i18n_feedback_suggestions, %i[translation_key locale]
+    add_index :i18n_feedback_suggestions, :status
   end
 end

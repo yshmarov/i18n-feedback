@@ -1,0 +1,26 @@
+name: Release
+
+# Publishes the gem to RubyGems via trusted publishing (OIDC) — no API key or
+# MFA prompt. Triggered by pushing a version tag, e.g. `git tag v0.5.0 && git
+# push origin v0.5.0`. Configured at:
+# https://rubygems.org/gems/i18n_feedback/trusted_publishers
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the GitHub release
+      id-token: write # exchange the OIDC token with RubyGems
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+      - name: Run tests before publishing
+        run: bundle exec rspec
+      - uses: rubygems/release-gem@v1

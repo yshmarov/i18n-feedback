@@ -15,6 +15,7 @@ ActiveRecord::Schema.define do
     t.text :proposed_value, null: false
     t.text :comment
     t.string :page_url
+    t.string :status, null: false, default: 'pending'
     t.string :author_id
     t.string :author_label
     t.timestamps
@@ -33,4 +34,8 @@ RSpec.configure do |config|
     I18nFeedback.instance_variable_set(:@config, fresh)
     example.run
   end
+
+  # Reset the rate limiter's per-IP counters between examples so one example's
+  # POSTs can't throttle another under random ordering.
+  config.before { Rails.cache.clear }
 end

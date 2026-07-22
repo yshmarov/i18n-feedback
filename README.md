@@ -116,6 +116,10 @@ I18nFeedback.configure do |config|
 
   # Keep in sync with the `mount` in config/routes.rb.
   config.mount_path = "/i18n_feedback"
+
+  # Per-IP throttle on the submission endpoint, passed to Rails' built-in rate
+  # limiter (Rails 7.2+; ignored on 7.1). Set nil to disable.
+  config.rate_limit = { to: 30, within: 60 }
 end
 ```
 
@@ -226,13 +230,25 @@ blue accent stays the same in both.
 Suggestions are ordinary records:
 
 ```ruby
-I18nFeedback::Suggestion.order(created_at: :desc).each do |s|
+I18nFeedback::Suggestion.where(status: "pending").newest_first.each do |s|
   puts "#{s.locale} #{s.translation_key}: #{s.old_value.inspect} -> #{s.proposed_value.inspect}"
 end
 ```
 
 Each row stores `translation_key`, `locale`, `old_value`, `proposed_value`,
-`comment`, `page_url`, and optional `author_id` / `author_label`.
+`comment`, `page_url`, `status`, and optional `author_id` / `author_label`.
+
+Every suggestion has a `status` — one of `pending`, `applied`, or `rejected`
+(`I18nFeedback::Suggestion::STATUSES`), backed by an Active Record enum. New
+suggestions start `pending`; once you apply a wording to your locale files or
+decide against it, set the status accordingly so the popover stops offering it
+as pending context:
+
+```ruby
+suggestion.status_applied!          # bang setter
+suggestion.status_applied?          # => true
+I18nFeedback::Suggestion.status_pending.newest_first  # scope per status
+```
 
 ### Getting notified
 

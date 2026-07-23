@@ -61,7 +61,7 @@ module I18nFeedback
       def labels(locale)
         {
           pill: t(locale, :pill, 'Suggest edits'),
-          pillActive: t(locale, :pill_active, 'Suggesting — tap to exit (Esc)'),
+          pillActive: t(locale, :pill_active, 'Stop suggesting (Esc)'),
           title: t(locale, :title, 'Suggest a translation fix'),
           currentText: t(locale, :current_text, 'Current text'),
           suggestedText: t(locale, :suggested_text, 'Suggested text'),

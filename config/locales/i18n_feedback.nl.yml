@@ -3,7 +3,7 @@ nl:
     pill: "Wijzigingen voorstellen"
     start: "Wijzigingen voorstellen"
     stop: "Stoppen met voorstellen"
-    pill_active: "Aan het voorstellen — tik om te sluiten (Esc)"
+    pill_active: "Stoppen met voorstellen (Esc)"
     title: "Een vertaalcorrectie voorstellen"
     current_text: "Huidige tekst"
     suggested_text: "Voorgestelde tekst"

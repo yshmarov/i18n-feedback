@@ -24,3 +24,7 @@ jobs:
       - name: Run tests before publishing
         run: bundle exec rspec
       - uses: rubygems/release-gem@v1
+        with:
+          # Skip the post-publish "wait for propagation" probe — it can time out
+          # even after a successful push and fail the job spuriously.
+          await-release: false

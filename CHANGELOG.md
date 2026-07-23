@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.6.1]
+
+- Shorten the active-pill label from "Suggesting — tap to exit (Esc)" to
+  "Stop suggesting (Esc)" across all bundled languages.
+- Release workflow: skip the flaky post-publish propagation probe
+  (`await-release: false`) so a successful push no longer fails the job.
+
 ## [0.6.0]
 
 - Ship `i18n_feedback.start` / `i18n_feedback.stop` labels in every bundled

@@ -3,7 +3,7 @@ tr:
     pill: "Düzenleme öner"
     start: "Düzenleme öner"
     stop: "Önermeyi durdur"
-    pill_active: "Öneri modu — çıkmak için dokun (Esc)"
+    pill_active: "Önermeyi durdur (Esc)"
     title: "Çeviri düzeltmesi öner"
     current_text: "Mevcut metin"
     suggested_text: "Önerilen metin"

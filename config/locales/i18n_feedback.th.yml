@@ -3,7 +3,7 @@ th:
     pill: "แนะนำการแก้ไข"
     start: "แนะนำการแก้ไข"
     stop: "หยุดแนะนำ"
-    pill_active: "กำลังแนะนำ — แตะเพื่อออก (Esc)"
+    pill_active: "หยุดแนะนำ (Esc)"
     title: "แนะนำการแก้ไขคำแปล"
     current_text: "ข้อความปัจจุบัน"
     suggested_text: "ข้อความที่แนะนำ"

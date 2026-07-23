@@ -3,7 +3,7 @@ id:
     pill: "Sarankan perubahan"
     start: "Sarankan perubahan"
     stop: "Berhenti menyarankan"
-    pill_active: "Menyarankan — ketuk untuk keluar (Esc)"
+    pill_active: "Berhenti menyarankan (Esc)"
     title: "Sarankan perbaikan terjemahan"
     current_text: "Teks saat ini"
     suggested_text: "Teks yang disarankan"

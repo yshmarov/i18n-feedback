@@ -3,7 +3,7 @@ es:
     pill: "Sugerir cambios"
     start: "Sugerir cambios"
     stop: "Dejar de sugerir"
-    pill_active: "Sugiriendo — toca para salir (Esc)"
+    pill_active: "Dejar de sugerir (Esc)"
     title: "Sugerir una corrección de traducción"
     current_text: "Texto actual"
     suggested_text: "Texto sugerido"

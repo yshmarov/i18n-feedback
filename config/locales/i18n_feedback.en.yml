@@ -3,7 +3,7 @@ en:
     pill: "Suggest edits"
     start: "Suggest edits"
     stop: "Stop suggesting"
-    pill_active: "Suggesting — tap to exit (Esc)"
+    pill_active: "Stop suggesting (Esc)"
     title: "Suggest a translation fix"
     current_text: "Current text"
     suggested_text: "Suggested text"

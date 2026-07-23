@@ -3,7 +3,7 @@ de:
     pill: "Änderungen vorschlagen"
     start: "Änderungen vorschlagen"
     stop: "Vorschläge beenden"
-    pill_active: "Vorschlagsmodus — zum Beenden tippen (Esc)"
+    pill_active: "Vorschläge beenden (Esc)"
     title: "Übersetzungskorrektur vorschlagen"
     current_text: "Aktueller Text"
     suggested_text: "Vorgeschlagener Text"

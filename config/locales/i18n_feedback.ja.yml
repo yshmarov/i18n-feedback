@@ -2,7 +2,7 @@ ja:
   i18n_feedback:
     pill: "修正を提案"
     start: "翻訳を改善"
-    stop: "提案を終了"
+    stop: "提案を終了 (Esc)"
     pill_active: "提案を終了（Esc）"
     title: "翻訳の修正を提案"
     current_text: "現在のテキスト"

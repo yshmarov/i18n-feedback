@@ -2,7 +2,7 @@ it:
   i18n_feedback:
     pill: "Suggerisci modifiche"
     start: "Migliora la traduzione"
-    stop: "Interrompi i suggerimenti"
+    stop: "Interrompi i suggerimenti (Esc)"
     pill_active: "Interrompi i suggerimenti (Esc)"
     title: "Suggerisci una correzione di traduzione"
     current_text: "Testo attuale"

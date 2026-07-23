@@ -9,7 +9,11 @@ module I18nFeedback
   # served as a separate asset to avoid any dependency on the host's asset
   # pipeline.
   module Widget
-    SOURCE = File.expand_path('../../app/assets/i18n_feedback/widget.js', __dir__)
+    # Lives under lib/ (not app/assets/), so a host that runs an asset
+    # pipeline never ingests it: Rails auto-registers every engine's
+    # app/assets/* directory, which would put this file in the host's asset
+    # namespace as a bare "widget.js" and into its precompiled output.
+    SOURCE = File.expand_path('widget.js', __dir__)
 
     # Right-to-left scripts, so the popover renders mirrored for those locales.
     # Matched on the language subtag, so region variants ("ar-EG") count too.

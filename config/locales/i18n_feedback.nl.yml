@@ -2,7 +2,7 @@ nl:
   i18n_feedback:
     pill: "Wijzigingen voorstellen"
     start: "Vertaling verbeteren"
-    stop: "Stoppen met voorstellen"
+    stop: "Stoppen met voorstellen (Esc)"
     pill_active: "Stoppen met voorstellen (Esc)"
     title: "Een vertaalcorrectie voorstellen"
     current_text: "Huidige tekst"

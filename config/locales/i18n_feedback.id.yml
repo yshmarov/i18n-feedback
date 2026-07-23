@@ -2,7 +2,7 @@ id:
   i18n_feedback:
     pill: "Sarankan perubahan"
     start: "Perbaiki terjemahan"
-    stop: "Berhenti menyarankan"
+    stop: "Berhenti menyarankan (Esc)"
     pill_active: "Berhenti menyarankan (Esc)"
     title: "Sarankan perbaikan terjemahan"
     current_text: "Teks saat ini"

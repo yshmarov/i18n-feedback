@@ -3,7 +3,7 @@ ro:
     pill: "Sugerează modificări"
     pill_active: "Oprește sugestiile (Esc)"
     start: "Îmbunătățește traducerea"
-    stop: "Oprește sugestiile"
+    stop: "Oprește sugestiile (Esc)"
     title: "Sugerează o corectură de traducere"
     current_text: "Text curent"
     suggested_text: "Text sugerat"

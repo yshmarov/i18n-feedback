@@ -2,7 +2,7 @@ tr:
   i18n_feedback:
     pill: "Düzenleme öner"
     start: "Çeviriyi iyileştir"
-    stop: "Önermeyi durdur"
+    stop: "Önermeyi durdur (Esc)"
     pill_active: "Önermeyi durdur (Esc)"
     title: "Çeviri düzeltmesi öner"
     current_text: "Mevcut metin"

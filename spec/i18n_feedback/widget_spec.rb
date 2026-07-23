@@ -8,6 +8,11 @@ RSpec.describe I18nFeedback::Widget do
     JSON.parse(snippet[%r{data-i18n-feedback-config>(.*?)</script>}m, 1])
   end
 
+  it 'stays out of the host asset pipeline (no app/assets to auto-register)' do
+    expect(I18nFeedback::Engine.paths['app/assets'].existent).to be_empty
+    expect(File.exist?(I18nFeedback::Widget::SOURCE)).to be(true)
+  end
+
   describe '.snippet labels' do
     # These locales aren't in the dummy app's available_locales; the enforcement
     # is about the app's own locale, not which translations the gem ships.

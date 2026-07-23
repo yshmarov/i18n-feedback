@@ -2,7 +2,7 @@ vi:
   i18n_feedback:
     pill: "Đề xuất chỉnh sửa"
     start: "Cải thiện bản dịch"
-    stop: "Dừng đề xuất"
+    stop: "Dừng đề xuất (Esc)"
     pill_active: "Dừng đề xuất (Esc)"
     title: "Đề xuất sửa bản dịch"
     current_text: "Văn bản hiện tại"

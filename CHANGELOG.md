@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+## [0.7.1]
+
+- The `i18n_feedback.stop` toggle label now reads "Stop suggesting (Esc)" in
+  every language — Esc already exits suggest mode, so the control says so.
+- The widget JavaScript moved from `app/assets/` to `lib/` (it was always
+  inlined server-side, never served as an asset). Rails auto-registers every
+  engine's `app/assets/*` directory with the host's asset pipeline, so
+  Propshaft hosts were ingesting the file into their asset namespace under
+  the bare logical name `widget.js` — colliding with any other gem or host
+  file of the same name — and needlessly digesting a public copy at
+  precompile. The gem is now invisible to Sprockets/Propshaft entirely.
+  No behavior change.
+
 ## [0.7.0]
 
 - Reword the `i18n_feedback.start` toggle label from "Suggest edits" to

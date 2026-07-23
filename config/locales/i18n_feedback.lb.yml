@@ -3,7 +3,7 @@ lb:
     pill: "Ännerunge virschloen"
     pill_active: "Virschléi stoppen (Esc)"
     start: "Iwwersetzung verbesseren"
-    stop: "Virschléi stoppen"
+    stop: "Virschléi stoppen (Esc)"
     title: "Eng Iwwersetzungskorrektur virschloen"
     current_text: "Aktuellen Text"
     suggested_text: "Virgeschloenen Text"

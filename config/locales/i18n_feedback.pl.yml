@@ -2,7 +2,7 @@ pl:
   i18n_feedback:
     pill: "Zaproponuj zmiany"
     start: "Popraw tłumaczenie"
-    stop: "Zakończ sugerowanie"
+    stop: "Zakończ sugerowanie (Esc)"
     pill_active: "Zakończ sugerowanie (Esc)"
     title: "Zaproponuj poprawkę tłumaczenia"
     current_text: "Bieżący tekst"

@@ -2,7 +2,7 @@ pt:
   i18n_feedback:
     pill: "Sugerir edições"
     start: "Melhorar tradução"
-    stop: "Parar de sugerir"
+    stop: "Parar de sugerir (Esc)"
     pill_active: "Parar de sugerir (Esc)"
     title: "Sugerir uma correção de tradução"
     current_text: "Texto atual"

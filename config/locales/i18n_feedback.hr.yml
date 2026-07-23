@@ -3,7 +3,7 @@ hr:
     pill: "Predloži izmjene"
     pill_active: "Prestani predlagati (Esc)"
     start: "Poboljšaj prijevod"
-    stop: "Prestani predlagati"
+    stop: "Prestani predlagati (Esc)"
     title: "Predložite ispravak prijevoda"
     current_text: "Trenutni tekst"
     suggested_text: "Predloženi tekst"

@@ -1,0 +1,16 @@
+lb:
+  i18n_feedback:
+    pill: "Ännerunge virschloen"
+    pill_active: "Virschléi stoppen (Esc)"
+    start: "Iwwersetzung verbesseren"
+    stop: "Virschléi stoppen"
+    title: "Eng Iwwersetzungskorrektur virschloen"
+    current_text: "Aktuellen Text"
+    suggested_text: "Virgeschloenen Text"
+    comment: "Kommentar"
+    comment_placeholder: "Optional Notiz fir den Entwéckler"
+    prior_title: "Scho virgeschloen (a Waardschleef)"
+    cancel: "Ofbriechen"
+    save: "Virschlag schécken"
+    error_blank: "Gitt wannechgelift e Virschlag an."
+    error_save: "De Virschlag konnt net gespäichert ginn."

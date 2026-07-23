@@ -1,7 +1,7 @@
 tr:
   i18n_feedback:
     pill: "Düzenleme öner"
-    start: "Düzenleme öner"
+    start: "Çeviriyi iyileştir"
     stop: "Önermeyi durdur"
     pill_active: "Önermeyi durdur (Esc)"
     title: "Çeviri düzeltmesi öner"

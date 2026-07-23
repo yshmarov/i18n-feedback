@@ -1,7 +1,7 @@
 de:
   i18n_feedback:
     pill: "Änderungen vorschlagen"
-    start: "Änderungen vorschlagen"
+    start: "Übersetzung verbessern"
     stop: "Vorschläge beenden"
     pill_active: "Vorschläge beenden (Esc)"
     title: "Übersetzungskorrektur vorschlagen"

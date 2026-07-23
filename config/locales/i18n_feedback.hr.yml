@@ -1,0 +1,16 @@
+hr:
+  i18n_feedback:
+    pill: "Predloži izmjene"
+    pill_active: "Prestani predlagati (Esc)"
+    start: "Poboljšaj prijevod"
+    stop: "Prestani predlagati"
+    title: "Predložite ispravak prijevoda"
+    current_text: "Trenutni tekst"
+    suggested_text: "Predloženi tekst"
+    comment: "Komentar"
+    comment_placeholder: "Neobavezna napomena za razvojni tim"
+    prior_title: "Već predloženo (na čekanju)"
+    cancel: "Odustani"
+    save: "Pošalji prijedlog"
+    error_blank: "Unesite prijedlog."
+    error_save: "Prijedlog nije moguće spremiti."

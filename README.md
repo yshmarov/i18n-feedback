@@ -192,12 +192,12 @@ It renders nothing unless the tool is available for the request.
 The pill and the suggestion popover speak the app's language: every string
 resolves through Rails I18n under the `i18n_feedback.*` scope and follows the
 language the page was rendered in (its `<html lang>`, falling back to
-`I18n.locale`). Translations ship out of the box for English plus 20 more
-languages — Arabic, Bengali, Chinese (Simplified), Dutch, French, German, Hindi,
-Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish,
-Thai, Turkish, Ukrainian, Urdu and Vietnamese — so the tool is already localized
-for most apps. RTL locales (Arabic, Urdu, …) render the popover right-to-left
-automatically.
+`I18n.locale`). Translations ship out of the box for English plus 25 more
+languages — Arabic, Bengali, Bulgarian, Chinese (Simplified), Croatian, Dutch,
+French, German, Greek, Hindi, Indonesian, Italian, Japanese, Korean,
+Luxembourgish, Polish, Portuguese, Romanian, Russian, Spanish, Thai, Turkish,
+Ukrainian, Urdu and Vietnamese — so the tool is already localized for most apps.
+RTL locales (Arabic, Urdu, …) render the popover right-to-left automatically.
 
 Any key you haven't translated falls back to English, so a partially translated
 locale never leaves a control blank. To add a language, or reword the bundled

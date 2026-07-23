@@ -1,7 +1,7 @@
 fr:
   i18n_feedback:
     pill: "Proposer des corrections"
-    start: "Proposer des corrections"
+    start: "Améliorer la traduction"
     stop: "Arrêter de proposer"
     pill_active: "Arrêter de proposer (Échap)"
     title: "Proposer une correction de traduction"

@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [0.7.0]
+
+- Reword the `i18n_feedback.start` toggle label from "Suggest edits" to
+  "Improve translation" (localized in every language) — clearer for a menu/link
+  entry. The floating pill's own label (`pill`) is unchanged.
+- Ship 5 more languages: Bulgarian, Greek, Croatian, Luxembourgish, and
+  Romanian — 25 languages besides English now bundled.
+
 ## [0.6.1]
 
 - Shorten the active-pill label from "Suggesting — tap to exit (Esc)" to

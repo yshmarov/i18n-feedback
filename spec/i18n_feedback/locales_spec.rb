@@ -18,8 +18,8 @@ RSpec.describe 'bundled locales' do
 
   expected_keys = keys_for.call(File.join(locales_dir, 'i18n_feedback.en.yml'))
 
-  it 'ships more than 20 languages' do
-    expect(files.size).to be >= 21
+  it 'ships 25+ languages besides English' do
+    expect(files.size).to be >= 26
   end
 
   it 'includes the host-facing toggle labels in English' do

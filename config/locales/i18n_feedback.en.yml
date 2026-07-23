@@ -24,7 +24,8 @@ en:
     dashboard:
       title: "Translation suggestions"
       subtitle: "Review what reviewers proposed, then apply it to your locale files."
-      filter: "Filter by locale"
+      locale: "Locale"
+      filter: "Filter"
       all_locales: "All locales"
       current: "Current"
       suggested: "Suggested"

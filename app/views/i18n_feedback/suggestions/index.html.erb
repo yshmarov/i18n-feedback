@@ -16,14 +16,16 @@
 <% if @locales.many? %>
   <form class="filters" method="get">
     <input type="hidden" name="status" value="<%= @status %>">
-    <select name="locale" onchange="this.form.requestSubmit()"
-            aria-label="<%= t('i18n_feedback.dashboard.filter', default: 'Filter by locale') %>">
+    <label for="i18nf-locale"><%= t('i18n_feedback.dashboard.locale', default: 'Locale') %></label>
+    <select id="i18nf-locale" name="locale" onchange="this.form.submit()">
       <option value=""><%= t('i18n_feedback.dashboard.all_locales', default: 'All locales') %></option>
       <% @locales.each do |locale| %>
         <option value="<%= locale %>" <%= 'selected' if locale == @locale %>><%= locale %></option>
       <% end %>
     </select>
-    <noscript><button><%= t('i18n_feedback.dashboard.filter', default: 'Filter') %></button></noscript>
+    <%# Inline onchange auto-submits where allowed; this button is the reliable
+        path where a strict CSP blocks inline handlers, or with JS off. %>
+    <button><%= t('i18n_feedback.dashboard.filter', default: 'Filter') %></button>
   </form>
 <% end %>
 

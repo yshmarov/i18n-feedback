@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## [0.8.2]
+
+- Fix the dashboard's locale filter doing nothing under a strict (nonce-based)
+  Content-Security-Policy: it relied on an inline `onchange` handler, which such
+  a CSP blocks. The filter now has an always-visible **Filter** submit button, so
+  it works with JS off or inline handlers blocked (the `onchange` stays as a
+  nicety where allowed).
+- Give the locale filter a visible **Locale** label.
+
 ## [0.8.1]
 
 - Make the dashboard **read-only**. Apply / Reject / Reopen / Delete only ever

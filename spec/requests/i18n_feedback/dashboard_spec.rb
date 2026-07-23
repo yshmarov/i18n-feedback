@@ -54,6 +54,17 @@ RSpec.describe 'I18nFeedback triage dashboard', type: :request do
       expect(response.body).to include('French wording')
       expect(response.body).not_to include('English wording')
     end
+
+    it 'renders the locale filter with a label and a submit button (works without JS / under a strict CSP)' do
+      admin!
+      create_suggestion(locale: 'en')
+      create_suggestion(locale: 'fr')
+
+      get '/i18n_feedback/'
+
+      expect(response.body).to include('<label for="i18nf-locale"')
+      expect(response.body).to match(%r{<form class="filters"[^>]*>.*<button[^>]*>Filter</button>.*</form>}m)
+    end
   end
 
   describe 'read-only: no mutation endpoints' do

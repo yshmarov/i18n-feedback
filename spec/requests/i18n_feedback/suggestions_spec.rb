@@ -92,12 +92,12 @@ RSpec.describe 'I18nFeedback::Suggestions', type: :request do
     end
   end
 
-  describe 'GET /i18n_feedback/suggestions' do
+  describe 'GET /i18n_feedback/suggestions/context' do
     it 'lists pending suggestions for a key and locale' do
       I18nFeedback::Suggestion.create!(translation_key: 'sample.greeting', locale: 'en', proposed_value: 'Hi')
       I18nFeedback::Suggestion.create!(translation_key: 'other.key', locale: 'en', proposed_value: 'Nope')
 
-      get '/i18n_feedback/suggestions', params: { key: 'sample.greeting', locale: 'en' }
+      get '/i18n_feedback/suggestions/context', params: { key: 'sample.greeting', locale: 'en' }
 
       expect(response).to have_http_status(:ok)
       body = response.parsed_body
@@ -110,10 +110,18 @@ RSpec.describe 'I18nFeedback::Suggestions', type: :request do
       I18nFeedback::Suggestion.create!(translation_key: 'sample.greeting', locale: 'en', proposed_value: 'Applied one',
                                        status: 'applied')
 
-      get '/i18n_feedback/suggestions', params: { key: 'sample.greeting', locale: 'en' }
+      get '/i18n_feedback/suggestions/context', params: { key: 'sample.greeting', locale: 'en' }
 
       values = response.parsed_body.map { |item| item['proposed_value'] }
       expect(values).to eq(['Pending one'])
+    end
+
+    it 'is forbidden when the tool is not available for the request' do
+      I18nFeedback.config.enabled = ->(_request) { false }
+
+      get '/i18n_feedback/suggestions/context', params: { key: 'sample.greeting', locale: 'en' }
+
+      expect(response).to have_http_status(:forbidden)
     end
   end
 end

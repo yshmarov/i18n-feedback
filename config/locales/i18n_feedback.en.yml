@@ -14,3 +14,26 @@ en:
     save: "Send suggestion"
     error_blank: "Please enter a suggestion."
     error_save: "Could not save the suggestion."
+    # Triage dashboard. English-only by default (an admin-facing surface); every
+    # string is rendered through I18n with these as fallbacks, so a host can
+    # translate or reword any of them under its own `i18n_feedback.*` scope.
+    statuses:
+      pending: "Pending"
+      applied: "Applied"
+      rejected: "Rejected"
+    dashboard:
+      title: "Translation suggestions"
+      subtitle: "Review what reviewers proposed, then apply it to your locale files."
+      filter: "Filter by locale"
+      all_locales: "All locales"
+      current: "Current"
+      suggested: "Suggested"
+      ago: "ago"
+      apply: "Apply"
+      reject: "Reject"
+      reopen: "Reopen"
+      delete: "Delete"
+      delete_confirm: "Delete this suggestion?"
+      empty: "Nothing here yet."
+      newer: "← Newer"
+      older: "Older →"

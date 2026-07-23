@@ -2,6 +2,15 @@
 
 module I18nFeedback
   class SuggestionsController < ApplicationController
+    PER_PAGE = 50
+
+    # Public widget API is available-gated; the triage dashboard is admin-gated.
+    before_action :require_available, only: %i[context create]
+    before_action :require_admin, only: %i[index update destroy]
+    before_action :set_suggestion, only: %i[update destroy]
+
+    layout 'i18n_feedback/application', only: :index
+
     # Throttle the public submission endpoint per IP so one user or bot can't
     # flood the table. Uses the rate limiter built into Rails 7.2+ (backed by
     # Rails.cache); a no-op on Rails 7.1. Tune or disable via config.rate_limit —
@@ -15,9 +24,40 @@ module I18nFeedback
                  })
     end
 
+    # --- triage dashboard (admin) --------------------------------------------
+
+    def index
+      @status = Suggestion::STATUSES.include?(params[:status]) ? params[:status] : 'pending'
+      @locale = params[:locale].presence
+      @counts = Suggestion.group(:status).count
+      @locales = Suggestion.distinct.pluck(:locale).compact.sort
+
+      scope = Suggestion.where(status: @status)
+      scope = scope.where(locale: @locale) if @locale
+      @page = [params[:page].to_i, 1].max
+      rows = scope.newest_first.offset((@page - 1) * PER_PAGE).limit(PER_PAGE + 1).to_a
+      @more = rows.size > PER_PAGE
+      @suggestions = rows.first(PER_PAGE)
+    end
+
+    def update
+      # status arrives from a dashboard button; ignore anything not a real state
+      # (an AR enum would otherwise raise on an unknown value).
+      status = params[:status].to_s
+      @suggestion.update!(status: status) if Suggestion::STATUSES.include?(status)
+      redirect_back fallback_location: root_path, status: :see_other
+    end
+
+    def destroy
+      @suggestion.destroy!
+      redirect_back fallback_location: root_path, status: :see_other
+    end
+
+    # --- widget API (public) -------------------------------------------------
+
     # Pending suggestions for one key/locale, shown as read-only context when the
     # proofreader reopens the popover for a string someone already flagged.
-    def index
+    def context
       suggestions = Suggestion
                     .where(translation_key: params[:key], locale: params[:locale])
                     .status_pending
@@ -40,6 +80,10 @@ module I18nFeedback
     end
 
     private
+
+    def set_suggestion
+      @suggestion = Suggestion.find(params[:id])
+    end
 
     def attribute_author(suggestion)
       author = current_author

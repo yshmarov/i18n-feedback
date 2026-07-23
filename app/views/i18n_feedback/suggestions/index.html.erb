@@ -1,0 +1,93 @@
+<header class="page">
+  <h1><%= t('i18n_feedback.dashboard.title', default: 'Translation suggestions') %></h1>
+  <p class="lede"><%= t('i18n_feedback.dashboard.subtitle', default: 'Review what reviewers proposed, then apply it to your locale files.') %></p>
+</header>
+
+<nav class="tabs">
+  <% I18nFeedback::Suggestion::STATUSES.each do |status| %>
+    <%= link_to suggestions_path(status: status, locale: @locale),
+                class: ('active' if status == @status) do %>
+      <%= t("i18n_feedback.statuses.#{status}", default: status.humanize) %>
+      <span class="count"><%= @counts.fetch(status, 0) %></span>
+    <% end %>
+  <% end %>
+</nav>
+
+<% if @locales.many? %>
+  <form class="filters" method="get">
+    <input type="hidden" name="status" value="<%= @status %>">
+    <select name="locale" onchange="this.form.requestSubmit()"
+            aria-label="<%= t('i18n_feedback.dashboard.filter', default: 'Filter by locale') %>">
+      <option value=""><%= t('i18n_feedback.dashboard.all_locales', default: 'All locales') %></option>
+      <% @locales.each do |locale| %>
+        <option value="<%= locale %>" <%= 'selected' if locale == @locale %>><%= locale %></option>
+      <% end %>
+    </select>
+    <noscript><button><%= t('i18n_feedback.dashboard.filter', default: 'Filter') %></button></noscript>
+  </form>
+<% end %>
+
+<% if @suggestions.any? %>
+  <% @suggestions.each do |suggestion| %>
+    <article class="card">
+      <div class="row-top">
+        <code class="key"><%= suggestion.translation_key %></code>
+        <span class="badge locale"><%= suggestion.locale %></span>
+        <span class="badge status-<%= suggestion.status %>">
+          <%= t("i18n_feedback.statuses.#{suggestion.status}", default: suggestion.status.humanize) %>
+        </span>
+        <span class="spacer"></span>
+        <span class="meta">
+          <% if suggestion.author_label.present? %><%= suggestion.author_label %> · <% end %>
+          <span title="<%= suggestion.created_at %>"><%= time_ago_in_words(suggestion.created_at) %> <%= t('i18n_feedback.dashboard.ago', default: 'ago') %></span>
+        </span>
+      </div>
+
+      <dl class="diff">
+        <dt><%= t('i18n_feedback.dashboard.current', default: 'Current') %></dt>
+        <dd><span class="old" dir="auto"><%= suggestion.old_value.presence || '—' %></span></dd>
+        <dt><%= t('i18n_feedback.dashboard.suggested', default: 'Suggested') %></dt>
+        <dd><span class="new" dir="auto"><%= suggestion.proposed_value %></span></dd>
+      </dl>
+
+      <% if suggestion.comment.present? %>
+        <div class="comment" dir="auto"><%= suggestion.comment %></div>
+      <% end %>
+
+      <div class="actions">
+        <% unless suggestion.status_applied? %>
+          <%= button_to t('i18n_feedback.dashboard.apply', default: 'Apply'),
+                        suggestion_path(suggestion, status: 'applied'), method: :patch, class: 'primary' %>
+        <% end %>
+        <% unless suggestion.status_rejected? %>
+          <%= button_to t('i18n_feedback.dashboard.reject', default: 'Reject'),
+                        suggestion_path(suggestion, status: 'rejected'), method: :patch %>
+        <% end %>
+        <% unless suggestion.status_pending? %>
+          <%= button_to t('i18n_feedback.dashboard.reopen', default: 'Reopen'),
+                        suggestion_path(suggestion, status: 'pending'), method: :patch %>
+        <% end %>
+        <%= button_to t('i18n_feedback.dashboard.delete', default: 'Delete'),
+                      suggestion_path(suggestion), method: :delete, class: 'danger',
+                      form: { data: { turbo_confirm: t('i18n_feedback.dashboard.delete_confirm', default: 'Delete this suggestion?') } } %>
+      </div>
+    </article>
+  <% end %>
+
+  <nav class="pager">
+    <span>
+      <% if @page > 1 %>
+        <%= link_to t('i18n_feedback.dashboard.newer', default: '← Newer'),
+                    suggestions_path(status: @status, locale: @locale, page: @page - 1) %>
+      <% end %>
+    </span>
+    <span>
+      <% if @more %>
+        <%= link_to t('i18n_feedback.dashboard.older', default: 'Older →'),
+                    suggestions_path(status: @status, locale: @locale, page: @page + 1) %>
+      <% end %>
+    </span>
+  </nav>
+<% else %>
+  <div class="empty"><%= t('i18n_feedback.dashboard.empty', default: 'Nothing here yet.') %></div>
+<% end %>

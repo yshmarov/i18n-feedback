@@ -14,6 +14,13 @@ module I18nFeedback
     # feature flag, an allowlist, etc.
     attr_accessor :enabled
 
+    # Per-request gate for the triage dashboard (browse suggestions, change their
+    # status, delete). Independent of `enabled` and `enabled_environments`: the
+    # widget is dev/staging-only, but a maintainer may want to triage from
+    # production. Defaults to development only, so a fresh install never exposes
+    # the dashboard until you wire it to your own admin check.
+    attr_accessor :authorize_admin
+
     # Resolve the current user for attribution (optional). Return an object
     # responding to #id, or nil. Receives the Rack::Request.
     attr_accessor :current_user
@@ -60,6 +67,7 @@ module I18nFeedback
     def initialize
       @enabled_environments = %w[development staging]
       @enabled = ->(_request) { true }
+      @authorize_admin = ->(_request) { Rails.env.development? }
       @current_user = ->(_request) {}
       @author_label = ->(user) { user.respond_to?(:email) ? user.email : user&.to_s }
       @available_locales = -> { I18n.available_locales.map(&:to_s) }

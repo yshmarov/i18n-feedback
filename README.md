@@ -97,6 +97,10 @@ I18nFeedback.configure do |config|
   # Extra per-request gate. Return false to hide the tool. Receives the request.
   config.enabled = ->(request) { true }
 
+  # Who may open the triage dashboard. Independent of the gates above; defaults
+  # to development only. Wire it to your own admin check to open it elsewhere.
+  config.authorize_admin = ->(request) { Rails.env.development? }
+
   # Attribute a suggestion to a user (optional). Return an object responding to
   # #id, or nil. Receives the request.
   config.current_user = ->(request) { nil }
@@ -233,7 +237,28 @@ blue accent stays the same in both.
 
 ## Reviewing suggestions
 
-Suggestions are ordinary records:
+### Triage dashboard
+
+Mounted at your `mount_path` (default `/i18n_feedback`), the engine root is a
+built-in triage dashboard: pending / applied / rejected tabs with counts, a
+per-locale filter, each suggestion shown as current-vs-proposed, and one-click
+**Apply** / **Reject** / **Reopen** / **Delete**. It's plain server-rendered
+HTML with its own styling — no host assets or JS framework needed.
+
+It has its own gate, `config.authorize_admin`, **defaulting to development
+only** — so a fresh install never exposes it in production. Point it at your own
+admin check to open it elsewhere:
+
+```ruby
+config.authorize_admin = ->(request) { request.env["warden"]&.user&.admin? }
+```
+
+The gate is independent of `enabled` / `enabled_environments`: the widget can be
+dev/staging-only while a maintainer still triages from production.
+
+### From the console
+
+Suggestions are also ordinary records:
 
 ```ruby
 I18nFeedback::Suggestion.where(status: "pending").newest_first.each do |s|

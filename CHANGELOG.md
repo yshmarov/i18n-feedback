@@ -2,6 +2,25 @@
 
 ## [Unreleased]
 
+## [0.8.0]
+
+- Add a built-in **triage dashboard**, mounted at the engine root (your
+  `mount_path`, default `/i18n_feedback`): pending / applied / rejected tabs
+  with counts, a per-locale filter, each suggestion shown current-vs-proposed,
+  and one-click Apply / Reject / Reopen / Delete. Plain server-rendered HTML
+  with its own self-contained styling (light + dark via `prefers-color-scheme`)
+  — no host assets or JS framework required.
+- Every dashboard string renders through Rails I18n under `i18n_feedback.dashboard.*`
+  and `i18n_feedback.statuses.*`, with English fallbacks, so a host can translate
+  or reword any of it from its own locale files.
+- Add `config.authorize_admin` — the dashboard's gate, **defaulting to
+  development only** so a fresh install never exposes it in production. It is
+  independent of `enabled` / `enabled_environments`, so a maintainer can triage
+  from production even where the widget is off.
+- The widget's "already suggested" context now loads from
+  `GET {mount_path}/suggestions/context` (was the collection index, now the
+  dashboard). Internal to the gem; the bundled widget was updated in lockstep.
+
 ## [0.7.1]
 
 - The `i18n_feedback.stop` toggle label now reads "Stop suggesting (Esc)" in

@@ -26,5 +26,12 @@ module I18nFeedback
     def available?(request)
       config.environment_enabled? && !!config.enabled.call(request)
     end
+
+    # May this request browse and triage the dashboard? Independent of
+    # `available?` — the dashboard has its own gate so maintainers can review
+    # suggestions from production even where the widget itself is off.
+    def admin?(request)
+      !!config.authorize_admin.call(request)
+    end
   end
 end

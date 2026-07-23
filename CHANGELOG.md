@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## [0.6.0]
+
+- Ship `i18n_feedback.start` / `i18n_feedback.stop` labels in every bundled
+  language, for hosts that drive suggest mode from their own menu/link instead
+  of the floating pill. Because the `i18n_feedback.*` scope is exempt from
+  key-marking, these are safe to render with `t(...)` — no plain-literal
+  workaround needed. See the "Toggling suggest mode from your own link" README
+  section for a full HTML example.
+
 ## [0.5.0]
 
 - Add a `status` to each suggestion — a string-backed Active Record enum with

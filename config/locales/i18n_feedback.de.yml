@@ -1,6 +1,8 @@
 de:
   i18n_feedback:
     pill: "Änderungen vorschlagen"
+    start: "Änderungen vorschlagen"
+    stop: "Vorschläge beenden"
     pill_active: "Vorschlagsmodus — zum Beenden tippen (Esc)"
     title: "Übersetzungskorrektur vorschlagen"
     current_text: "Aktueller Text"

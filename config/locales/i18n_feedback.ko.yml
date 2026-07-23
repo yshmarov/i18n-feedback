@@ -1,6 +1,8 @@
 ko:
   i18n_feedback:
     pill: "수정 제안"
+    start: "수정 제안"
+    stop: "제안 중지"
     pill_active: "제안 중 — 종료하려면 탭하세요 (Esc)"
     title: "번역 수정 제안"
     current_text: "현재 텍스트"

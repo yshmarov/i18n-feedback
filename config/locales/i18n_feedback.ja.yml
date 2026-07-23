@@ -1,6 +1,8 @@
 ja:
   i18n_feedback:
     pill: "修正を提案"
+    start: "修正を提案"
+    stop: "提案を終了"
     pill_active: "提案中 — タップで終了（Esc）"
     title: "翻訳の修正を提案"
     current_text: "現在のテキスト"

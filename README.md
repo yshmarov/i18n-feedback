@@ -136,16 +136,20 @@ config.show_pill = false # optional
 A one-way "turn it on" link is just the toggle parameter:
 
 ```erb
-<%= link_to "Proofread translations", "?i18n_feedback=true" %>
+<%= link_to t("i18n_feedback.start"), "?i18n_feedback=true" %>
 ```
 
 For a single control that flips both ways, read the current state from the
-`i18n_feedback` cookie and point at the opposite state:
+`i18n_feedback` cookie and point at the opposite state. The gem ships `start`
+and `stop` labels under the `i18n_feedback.*` scope in every bundled language,
+so a localized toggle needs no keys of your own:
 
 ```erb
-<% on = cookies[:i18n_feedback].present? %>
-<%= link_to (on ? "Disable translations editing" : "Enable translations editing"),
-            "?i18n_feedback=#{!on}" %>
+<% if I18nFeedback.available?(request) %>
+  <% suggesting = cookies[:i18n_feedback].present? %>
+  <%= link_to (suggesting ? t("i18n_feedback.stop") : t("i18n_feedback.start")),
+              "?#{I18nFeedback.config.toggle_param}=#{!suggesting}" %>
+<% end %>
 ```
 
 Good to know:
@@ -158,8 +162,10 @@ Good to know:
   ordinary navigation during proofreading (so a stray click can't leave the page
   mid-edit), but any link carrying the toggle parameter is exempt — so a "Disable"
   item in your nav always gets you out.
-- **Don't** run the label through `I18n.t`: the tool would then mark its own
-  control as an editable string. Keep the label a plain literal.
+- The `i18n_feedback.*` keys are **safe to run through `I18n.t`** — that scope is
+  exempt from key-marking, so the tool never flags its own controls as editable.
+  Use the bundled `i18n_feedback.start` / `i18n_feedback.stop` labels (or your own
+  keys); either way, no plain-literal workaround is needed.
 
 ### Gating examples
 

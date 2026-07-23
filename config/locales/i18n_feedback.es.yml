@@ -1,6 +1,8 @@
 es:
   i18n_feedback:
     pill: "Sugerir cambios"
+    start: "Sugerir cambios"
+    stop: "Dejar de sugerir"
     pill_active: "Sugiriendo — toca para salir (Esc)"
     title: "Sugerir una corrección de traducción"
     current_text: "Texto actual"

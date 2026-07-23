@@ -1,6 +1,8 @@
 pl:
   i18n_feedback:
     pill: "Zaproponuj zmiany"
+    start: "Zaproponuj zmiany"
+    stop: "Zakończ sugerowanie"
     pill_active: "Tryb sugestii — dotknij, aby wyjść (Esc)"
     title: "Zaproponuj poprawkę tłumaczenia"
     current_text: "Bieżący tekst"

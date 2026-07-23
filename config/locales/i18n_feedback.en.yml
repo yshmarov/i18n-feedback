@@ -1,6 +1,8 @@
 en:
   i18n_feedback:
     pill: "Suggest edits"
+    start: "Suggest edits"
+    stop: "Stop suggesting"
     pill_active: "Suggesting — tap to exit (Esc)"
     title: "Suggest a translation fix"
     current_text: "Current text"

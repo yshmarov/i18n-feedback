@@ -1,6 +1,8 @@
 tr:
   i18n_feedback:
     pill: "Düzenleme öner"
+    start: "Düzenleme öner"
+    stop: "Önermeyi durdur"
     pill_active: "Öneri modu — çıkmak için dokun (Esc)"
     title: "Çeviri düzeltmesi öner"
     current_text: "Mevcut metin"

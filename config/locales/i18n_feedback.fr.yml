@@ -1,6 +1,8 @@
 fr:
   i18n_feedback:
     pill: "Proposer des corrections"
+    start: "Proposer des corrections"
+    stop: "Arrêter de proposer"
     pill_active: "En cours — appuyez pour quitter (Échap)"
     title: "Proposer une correction de traduction"
     current_text: "Texte actuel"

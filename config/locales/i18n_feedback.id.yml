@@ -1,6 +1,8 @@
 id:
   i18n_feedback:
     pill: "Sarankan perubahan"
+    start: "Sarankan perubahan"
+    stop: "Berhenti menyarankan"
     pill_active: "Menyarankan — ketuk untuk keluar (Esc)"
     title: "Sarankan perbaikan terjemahan"
     current_text: "Teks saat ini"

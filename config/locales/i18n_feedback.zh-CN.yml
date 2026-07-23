@@ -1,6 +1,8 @@
 zh-CN:
   i18n_feedback:
     pill: "建议修改"
+    start: "建议修改"
+    stop: "停止建议"
     pill_active: "建议中 — 点击退出（Esc）"
     title: "建议翻译修正"
     current_text: "当前文本"

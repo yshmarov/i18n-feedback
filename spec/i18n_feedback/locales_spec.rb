@@ -37,7 +37,7 @@ RSpec.describe 'bundled locales' do
   it 'ships the dashboard strings in English' do
     en = YAML.load_file(en_file)['en']['i18n_feedback']
     expect(en['statuses'].keys).to contain_exactly('pending', 'applied', 'rejected')
-    expect(en['dashboard']).to include('title', 'apply', 'reject', 'delete', 'empty')
+    expect(en['dashboard']).to include('title', 'subtitle', 'current', 'suggested', 'empty')
   end
 
   files.each do |file|

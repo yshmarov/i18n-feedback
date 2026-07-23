@@ -237,13 +237,19 @@ blue accent stays the same in both.
 
 ## Reviewing suggestions
 
-### Triage dashboard
+### Review dashboard
 
 Mounted at your `mount_path` (default `/i18n_feedback`), the engine root is a
-built-in triage dashboard: pending / applied / rejected tabs with counts, a
-per-locale filter, each suggestion shown as current-vs-proposed, and one-click
-**Apply** / **Reject** / **Reopen** / **Delete**. It's plain server-rendered
-HTML with its own styling — no host assets or JS framework needed.
+built-in **read-only** review board: pending / applied / rejected tabs with
+counts, a per-locale filter, and each suggestion shown as current-vs-proposed
+with its comment and author. It's plain server-rendered HTML with its own
+styling — no host assets or JS framework needed.
+
+It is deliberately read-only. The gem never writes to your locale files, so it
+doesn't pretend to: you review the suggestions here, then make the edits in your
+own `config/locales/*.yml`. (A suggestion's `status` still exists on the model
+for your own tracking — set it from the console — and is the groundwork for a
+future "apply to locale file" feature.)
 
 It has its own gate, `config.authorize_admin`, **defaulting to development
 only** — so a fresh install never exposes it in production. Point it at your own

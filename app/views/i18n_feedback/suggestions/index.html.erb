@@ -53,24 +53,6 @@
       <% if suggestion.comment.present? %>
         <div class="comment" dir="auto"><%= suggestion.comment %></div>
       <% end %>
-
-      <div class="actions">
-        <% unless suggestion.status_applied? %>
-          <%= button_to t('i18n_feedback.dashboard.apply', default: 'Apply'),
-                        suggestion_path(suggestion, status: 'applied'), method: :patch, class: 'primary' %>
-        <% end %>
-        <% unless suggestion.status_rejected? %>
-          <%= button_to t('i18n_feedback.dashboard.reject', default: 'Reject'),
-                        suggestion_path(suggestion, status: 'rejected'), method: :patch %>
-        <% end %>
-        <% unless suggestion.status_pending? %>
-          <%= button_to t('i18n_feedback.dashboard.reopen', default: 'Reopen'),
-                        suggestion_path(suggestion, status: 'pending'), method: :patch %>
-        <% end %>
-        <%= button_to t('i18n_feedback.dashboard.delete', default: 'Delete'),
-                      suggestion_path(suggestion), method: :delete, class: 'danger',
-                      form: { data: { turbo_confirm: t('i18n_feedback.dashboard.delete_confirm', default: 'Delete this suggestion?') } } %>
-      </div>
     </article>
   <% end %>
 

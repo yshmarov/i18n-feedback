@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [0.8.1]
+
+- Make the dashboard **read-only**. Apply / Reject / Reopen / Delete only ever
+  flipped the stored `status` — they never touched the host's locale files, so
+  offering them implied a capability the gem doesn't have. The buttons and their
+  `update` / `destroy` routes and actions are removed; the dashboard now just
+  lists suggestions for review, and you make the edits in your own locale files.
+  A suggestion's `status` still exists on the model for out-of-band tracking and
+  as groundwork for a future "apply to locale file" feature.
+
 ## [0.8.0]
 
 - Add a built-in **triage dashboard**, mounted at the engine root (your

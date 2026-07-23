@@ -4,10 +4,9 @@ module I18nFeedback
   class SuggestionsController < ApplicationController
     PER_PAGE = 50
 
-    # Public widget API is available-gated; the triage dashboard is admin-gated.
+    # Public widget API is available-gated; the read-only dashboard is admin-gated.
     before_action :require_available, only: %i[context create]
-    before_action :require_admin, only: %i[index update destroy]
-    before_action :set_suggestion, only: %i[update destroy]
+    before_action :require_admin, only: :index
 
     layout 'i18n_feedback/application', only: :index
 
@@ -40,19 +39,6 @@ module I18nFeedback
       @suggestions = rows.first(PER_PAGE)
     end
 
-    def update
-      # status arrives from a dashboard button; ignore anything not a real state
-      # (an AR enum would otherwise raise on an unknown value).
-      status = params[:status].to_s
-      @suggestion.update!(status: status) if Suggestion::STATUSES.include?(status)
-      redirect_back fallback_location: root_path, status: :see_other
-    end
-
-    def destroy
-      @suggestion.destroy!
-      redirect_back fallback_location: root_path, status: :see_other
-    end
-
     # --- widget API (public) -------------------------------------------------
 
     # Pending suggestions for one key/locale, shown as read-only context when the
@@ -80,10 +66,6 @@ module I18nFeedback
     end
 
     private
-
-    def set_suggestion
-      @suggestion = Suggestion.find(params[:id])
-    end
 
     def attribute_author(suggestion)
       author = current_author

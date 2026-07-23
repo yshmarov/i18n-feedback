@@ -56,57 +56,21 @@ RSpec.describe 'I18nFeedback triage dashboard', type: :request do
     end
   end
 
-  describe 'PATCH /suggestions/:id' do
-    it 'changes the status' do
+  describe 'read-only: no mutation endpoints' do
+    # The dashboard never writes to the host's locale files, so it deliberately
+    # exposes no way to change or delete a suggestion — status is managed out of
+    # band (console / a future apply feature).
+    it 'does not route PATCH or DELETE for a suggestion' do
       admin!
       suggestion = create_suggestion
 
       patch "/i18n_feedback/suggestions/#{suggestion.id}", params: { status: 'applied' }
+      expect(response).to have_http_status(:not_found)
 
-      expect(response).to have_http_status(:see_other)
-      expect(suggestion.reload.status).to eq('applied')
-    end
+      delete "/i18n_feedback/suggestions/#{suggestion.id}"
+      expect(response).to have_http_status(:not_found)
 
-    it 'ignores an unknown status instead of erroring' do
-      admin!
-      suggestion = create_suggestion
-
-      patch "/i18n_feedback/suggestions/#{suggestion.id}", params: { status: 'archived' }
-
-      expect(response).to have_http_status(:see_other)
       expect(suggestion.reload.status).to eq('pending')
-    end
-
-    it 'is forbidden without admin' do
-      suggestion = create_suggestion
-
-      patch "/i18n_feedback/suggestions/#{suggestion.id}", params: { status: 'applied' }
-
-      expect(response).to have_http_status(:forbidden)
-      expect(suggestion.reload.status).to eq('pending')
-    end
-  end
-
-  describe 'DELETE /suggestions/:id' do
-    it 'deletes the suggestion' do
-      admin!
-      suggestion = create_suggestion
-
-      expect do
-        delete "/i18n_feedback/suggestions/#{suggestion.id}"
-      end.to change(I18nFeedback::Suggestion, :count).by(-1)
-
-      expect(response).to have_http_status(:see_other)
-    end
-
-    it 'is forbidden without admin' do
-      suggestion = create_suggestion
-
-      expect do
-        delete "/i18n_feedback/suggestions/#{suggestion.id}"
-      end.not_to change(I18nFeedback::Suggestion, :count)
-
-      expect(response).to have_http_status(:forbidden)
     end
   end
 end
